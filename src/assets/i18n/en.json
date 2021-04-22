@@ -1,0 +1,27 @@
+{
+    "TOPBAR": {
+        "ARTICLES": "Articles",
+        "BOOK": "Book",
+        "LOGIN": "Login",
+        "SIGNUP":"Signup"
+    },
+    "GENERAL": {
+        "UNDEFINED": "Undefined",
+        "NOCOMMENT": "No Comments",
+        "COMMENT": "Comment",
+        "COMMENTS": "Comments"
+    },
+	"GENERAL-MESSAGE": {
+		"NOT-FOUND-TITLE": "Not Found",
+		"NOT-FOUND-MESSAGE": "This is page is not available. Are you sure, this is the correct url?",
+		"NOT-FOUND-REDIRECT-TO-HOME": "Return to "
+	},
+    "HOME" : {
+        "MYLASTPOST": "My Last Post"
+    },
+    "CATEGORY": {
+        "BLOG":{
+            "ANGULAR": "Angular"
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import { Environment } from './environment.interface';
 
 export const environment: Environment = {
-  production: true
+  apiUrl: 'http://localhost:5000/',
+  production: false
 };

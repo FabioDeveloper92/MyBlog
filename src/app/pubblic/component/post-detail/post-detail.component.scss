@@ -1,0 +1,55 @@
+.post-heading {
+    margin-bottom: 45px;
+    text-align: center;
+}
+
+.post-cats {
+    margin-bottom: 10px;
+
+    a {
+        background: #8fb59e;
+    padding: 0 10px;
+    line-height: 20px;
+    color: #fff;
+    }
+}
+
+.post-title {
+    margin-bottom: 10px;
+}
+
+.post-meta {
+    vertical-align: middle;
+
+    div {
+        display: inline-block;
+        font-size: 12px;
+
+        &:after {
+            content: "";
+            margin: 0 10px;
+            display: inline-block;
+            vertical-align: middle;
+            width: 1px;
+            height: 8px;
+            border-left: 1px solid;
+        }
+    }
+
+    .ath-post {
+        text-transform: capitalize;
+
+        span {
+            text-transform: none;
+        }
+    }
+
+}
+
+.post-format {
+    margin-bottom: 50px;
+}
+
+img {
+    max-width: 100%;
+}
