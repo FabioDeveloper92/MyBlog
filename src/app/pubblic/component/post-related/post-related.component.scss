@@ -1,0 +1,38 @@
+.post-related {
+  &.post-format {
+    margin-bottom: 25px;
+  }
+
+  .post-title {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+
+  .post-meta {
+    margin-bottom: 15px;
+    vertical-align: middle;
+
+    .ath-post {
+      text-transform: capitalize;
+    }
+
+    div {
+      display: inline-block;
+      font-size: 12px;
+
+      &:after {
+        content: "";
+        margin: 0 10px;
+        display: inline-block;
+        vertical-align: middle;
+        width: 1px;
+        height: 8px;
+        border-left: 1px solid;
+      }
+    }
+
+    .ath-post span {
+      text-transform: none;
+    }
+  }
+}

@@ -1,9 +1,10 @@
 <div class="container">
   <div class="column is-12">
-      <app-post-detail [postDetail]="postDetail$ | async "></app-post-detail>
-  </div>
-  <div class="column is-12">
-    <app-post-related></app-post-related>
+    <app-post-detail
+      [postDetail]="postDetail$ | async"
+      (categoryClick)="onCategoryClick($event)"
+      (postRelatedClick)="onPostRelatedClick($event)"
+    ></app-post-detail>
   </div>
   <div class="column is-12">
     <app-comment-form></app-comment-form>

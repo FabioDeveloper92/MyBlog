@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { PostDetail } from '../../models/post-detail.model';
+import { selectPostDetail } from '../post-read/post-read.selectors';
 import { PostReadState } from './post-read.state';
-import {selectPostDetail} from '../post-read/post-read.selectors';
 
 @Component({
   selector: 'app-post-read',
-  templateUrl: './post-read.component.html'
+  templateUrl: './post-read.component.html',
 })
 export class PostReadContainerComponent {
   postDetail$: Observable<PostDetail>;
@@ -16,4 +16,11 @@ export class PostReadContainerComponent {
     this.postDetail$ = this.store.select(selectPostDetail);
   }
 
+  onCategoryClick(event: number) {
+    console.log('TODO' + event);
+  }
+
+  onPostRelatedClick(event: string) {
+    console.log('TODO' + event);
+  }
 }

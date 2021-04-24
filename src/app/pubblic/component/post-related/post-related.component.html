@@ -1,1 +1,29 @@
-<p>post-related works!</p>
+<div class="post-related">
+  <div class="post-format post-image">
+    <figure>
+      <img
+        src="{{postRelated.imageUrl}}"
+        alt="Angelina Jolie’s Secret Style Weapon? The Top-Handle Tote"
+      />
+    </figure>
+  </div>
+  <div class="post-info">
+    <h3 class="post-title">
+      <a
+        (click)="onPostClick(postRelated.id)"
+        >{{ postRelated.title }}</a
+      >
+    </h3>
+    <div class="post-meta">
+      <div class="ath-post"><span>by</span> admin</div>
+      <div class="date-post">
+        <span class="post-date">{{ postRelated.date | date:'dd MMMM' }}</span>
+      </div>
+    </div>
+    <div class="post-excerpt">
+      <p>
+        {{ postRelated.summary }}
+      </p>
+    </div>
+  </div>
+</div>

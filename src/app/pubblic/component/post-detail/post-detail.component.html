@@ -1,28 +1,42 @@
 <div class="post-heading">
-  <div class="post-cats category-{{postDetail.category}}">
-    <a href="https://baloo.az-theme.net/category/fashion/" rel="category tag"
-      >{{ postDetail.category | categoryBlog | translate }}</a
-    >
+  <div class="post-cats category-{{ postDetail.category }}">
+    <a (click)="onCategoryClick(postDetail.category)" rel="category tag">
+      {{ postDetail.category | categoryBlog | translate }}
+    </a>
   </div>
   <h1 class="post-title title-single">
     {{ postDetail.title }}
   </h1>
   <div class="post-meta">
-    <div class="ath-post"><span>by</span>  {{ postDetail.createdBy }}</div>
+    <div class="ath-post"><span>by</span> {{ postDetail.createdBy }}</div>
     <div class="date-post">
-      <span class="post-date">{{ postDetail.date | date:'dd MMMM yyyy' }}</span>
+      <span class="post-date">{{
+        postDetail.date | date: "dd MMMM yyyy"
+      }}</span>
     </div>
-    <div class="comment-number">{{ postDetail.comments?.length | commentNumberTranslate | translate }}</div>
+    <div class="comment-number">
+      {{ postDetail.comments?.length | commentNumberTranslate | translate }}
+    </div>
   </div>
 </div>
 
 <div class="post-format">
-  <img
-    src="{{ postDetail.imageUrl }}"
-    alt="Featured Image"
-  />
+  <img src="{{ postDetail.imageUrl }}" alt="Featured Image" />
 </div>
 
 <div>
   {{ postDetail.text }}
+</div>
+
+<div class="columns is-multiline" *ngIf="postDetail.postRelateds?.length > 0">
+  <div class="column is-12">
+    <h3>{{ "POSTDETAIL.RELATEDPOST" | translate }}</h3>
+  </div>
+
+  <div class="column is-4" *ngFor="let postRelated of postDetail.postRelateds">
+    <app-post-related
+      [postRelated]="postRelated"
+      (postClick)="onPostRelatedClick(event$)"
+    ></app-post-related>
+  </div>
 </div>
