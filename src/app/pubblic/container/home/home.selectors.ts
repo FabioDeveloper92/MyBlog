@@ -6,7 +6,7 @@ import { PubblicState } from '../../pubblic.state';
 
 export const resumePostListAdapter = createEntityAdapter<ResumePost>();
 
-const selectHomeState = createSelector(
+export const selectHomeState = createSelector(
     getPubblicState,
     (state: PubblicState) => state.homeState
 );

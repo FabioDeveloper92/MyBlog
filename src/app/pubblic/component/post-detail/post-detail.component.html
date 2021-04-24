@@ -1,32 +1,28 @@
 <div class="post-heading">
-  <div class="post-cats">
+  <div class="post-cats category-{{postDetail.category}}">
     <a href="https://baloo.az-theme.net/category/fashion/" rel="category tag"
-      >Fashion</a
+      >{{ postDetail.category | categoryBlog | translate }}</a
     >
   </div>
   <h1 class="post-title title-single">
-    Angelina Jolie’s Secret Style Weapon? The Top-Handle Tote
+    {{ postDetail.title }}
   </h1>
   <div class="post-meta">
-    <div class="ath-post"><span>by</span> admin</div>
+    <div class="ath-post"><span>by</span>  {{ postDetail.createdBy }}</div>
     <div class="date-post">
-      <span class="post-date">May 23, 2019</span>
+      <span class="post-date">{{ postDetail.date | date:'dd MMMM yyyy' }}</span>
     </div>
-    <div class="comment-number">No Comments</div>
+    <div class="comment-number">{{ postDetail.comments?.length | commentNumberTranslate | translate }}</div>
   </div>
 </div>
 
 <div class="post-format">
   <img
-    src="https://baloo.az-theme.net/wp-content/uploads/2019/05/valerie-elash-1252873-unsplash-1200x700.jpg"
+    src="{{ postDetail.imageUrl }}"
     alt="Featured Image"
   />
 </div>
 
 <div>
-  Nsectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-  pariatur.
+  {{ postDetail.text }}
 </div>

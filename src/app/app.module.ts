@@ -3,7 +3,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
-import { RouterStateSerializer } from '@ngrx/router-store';
+import {
+  RouterStateSerializer,
+  StoreRouterConnectingModule,
+} from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -45,6 +48,8 @@ import { ConfigService } from './services/config.service';
 
     EffectsModule.forRoot([ConfigEffects, RouterEffects]),
 
+    StoreRouterConnectingModule.forRoot(),
+
     CoreModule.forRoot(),
 
     !environment.production
@@ -53,7 +58,7 @@ import { ConfigService } from './services/config.service';
   ],
   providers: [
     { provide: 'WINDOW', useFactory: getWindow },
-    
+
     ConfigService,
     ConfigGuard,
 

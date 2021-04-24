@@ -8,6 +8,7 @@ export function ofRoute(
 ): OperatorFunction<Action, Action> {
   return filter((action: Action) => {
     const isRouteAction = action.type === CHANGE;
+
     if (isRouteAction) {
       const routeAction = action as ChangeAction;
       const routePath = routeAction.payload.path;

@@ -2,11 +2,11 @@ import { Action } from '@ngrx/store';
 import { ResumePost } from '../../models/resume-post.model';
 import { ErrorPayload } from '../../../core/model/error-payload.model';
 
-export const RESUMEPOST_LIST = '[ResumePost - List] ResumePost List';
-export const RESUMEPOST_LIST_COMPLETE = '[ResumePost - List] ResumePost List Complete';
-export const RESUMEPOST_LIST_ERROR = '[ResumePost - List] ResumePost List Error';
+export const RESUMEPOST_LIST = '[Home] ResumePost List';
+export const RESUMEPOST_LIST_COMPLETE = '[Home] ResumePost List Complete';
+export const RESUMEPOST_LIST_ERROR = '[Home] ResumePost List Error';
 
-export const OPEN_POST_DETAIL = '[ResumePost - List] Open Post Detail';
+export const OPEN_POST_DETAIL = '[Home] Open Post Detail';
 
 export class ResumePostListAction implements Action {
   readonly type = RESUMEPOST_LIST;
@@ -31,4 +31,5 @@ export class OpenPostDetailAction implements Action {
 export type HomeActions =
   | ResumePostListAction
   | ResumePostListCompleteAction
-  | ResumePostListErrorAction;
+  | ResumePostListErrorAction
+  | OpenPostDetailAction;
