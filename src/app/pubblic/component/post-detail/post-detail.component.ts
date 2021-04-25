@@ -10,15 +10,10 @@ export class PostDetailComponent {
   @Input() postDetail: PostDetail;
 
   @Output() categoryClick = new EventEmitter<number>();
-  @Output() postRelatedClick = new EventEmitter<string>();
 
   constructor() {}
 
   onCategoryClick(id: number) {
     this.categoryClick.emit(id);
-  }
-
-  onPostRelatedClick(id: string) {
-    this.postRelatedClick.emit(id);
   }
 }

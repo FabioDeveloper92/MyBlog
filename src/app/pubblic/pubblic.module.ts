@@ -15,6 +15,7 @@ import { PostReadEffects } from './container/post-read/post-read.effects';
 import { PubblicReducers } from './pubblic.reducers';
 import { PubblicRoutes } from './pubblic.routes';
 import { PostService } from './services/post.service';
+import { CommentViewComponent } from './component/comment-view/comment-view.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { PostService } from './services/post.service';
     PostDetailComponent,
     PostRelatedComponent,
     CommentFormComponent,
+    CommentViewComponent,
   ],
   imports: [
     CommonModule,

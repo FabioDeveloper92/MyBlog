@@ -31,7 +31,7 @@
     display: inline-block;
     font-size: 12px;
 
-    &:after {
+    &:not(:last-child):after {
       content: "";
       margin: 0 10px;
       display: inline-block;
@@ -59,4 +59,8 @@ img {
   width: 100%;
   height: auto;
   max-width: 100%;
+}
+
+.post-related-container {
+  margin-top: 20px;
 }

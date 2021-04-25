@@ -6,7 +6,45 @@
       (postRelatedClick)="onPostRelatedClick($event)"
     ></app-post-detail>
   </div>
-  <div class="column is-12">
-    <app-comment-form></app-comment-form>
+
+  <div
+    class="columns is-multiline post-related-container"
+    *ngIf="(postDetail$ | async).postRelateds?.length > 0"
+  >
+    <div class="column is-12">
+      <h3>{{ "POSTREAD.RELATEDPOST" | translate }}</h3>
+    </div>
+
+    <div
+      class="column is-4"
+      *ngFor="let postRelated of (postDetail$ | async).postRelateds"
+    >
+      <app-post-related
+        [postRelated]="postRelated"
+        (postClick)="onPostRelatedClick($event)"
+      ></app-post-related>
+    </div>
+  </div>
+
+  <div class="columns is-multiline" >
+    <div class="column is-12">
+      <h3>
+        {{ "POSTREAD.DISCUSSION" | translate }} ({{
+          (postDetail$ | async).comments.length
+        }})
+      </h3>
+    </div>
+
+    <div class="columns is-multiline">
+      <div class="column is-12">
+        <app-comment-form></app-comment-form>
+      </div>
+    </div>
+
+    <div class="column is-12" *ngIf="(postDetail$ | async).comments">
+      <app-comment-view
+        [comments]="(postDetail$ | async).comments"
+      ></app-comment-view>
+    </div>
   </div>
 </div>

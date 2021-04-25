@@ -17,10 +17,10 @@ export class PostReadContainerComponent {
   }
 
   onCategoryClick(event: number) {
-    console.log('TODO' + event);
+    console.log('TODO category ' + event);
   }
 
-  onPostRelatedClick(event: string) {
-    console.log('TODO' + event);
+  onPostRelatedClick(event: number) {
+    console.log('TODO pr ' + event);
   }
 }

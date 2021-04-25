@@ -19,8 +19,9 @@
   "HOME": {
     "MYLASTPOST": "My Last Post"
   },
-  "POSTDETAIL": {
-    "RELATEDPOST": "Related Post"
+  "POSTREAD": {
+    "RELATEDPOST": "Related Post",
+    "DISCUSSION": "Discussion"
   },
   "CATEGORY": {
     "BLOG": {

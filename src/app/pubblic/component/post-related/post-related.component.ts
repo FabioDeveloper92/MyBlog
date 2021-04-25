@@ -8,11 +8,12 @@ import { RelatedPost } from '../../models/related-post.model';
 })
 export class PostRelatedComponent {
   @Input() postRelated: RelatedPost;
-  @Output() postClick: EventEmitter<string> = new EventEmitter<string>();
+  @Output() postClick = new EventEmitter<string>();
 
   constructor() {}
 
-  public onPostClick(id:string){
+  public onPostClick(id: string) {
     this.postClick.emit(id);
   }
+  
 }

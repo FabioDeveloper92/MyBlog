@@ -1,0 +1,18 @@
+<article class="media" *ngFor="let comment of comments">
+  <figure class="media-left">
+    <p class="image is-64x64">
+      <img src="{{ comment.authorThumb }}" />
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="content">
+      <p>
+        <strong>{{ comment.author }}</strong>
+        <br />
+        {{ comment.text }}
+        <br />
+        <small>{{ comment.date | date: "dd MMMM" }}</small>
+      </p>
+    </div>
+  </div>
+</article>

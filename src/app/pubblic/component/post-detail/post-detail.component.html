@@ -27,16 +27,3 @@
 <div>
   {{ postDetail.text }}
 </div>
-
-<div class="columns is-multiline" *ngIf="postDetail.postRelateds?.length > 0">
-  <div class="column is-12">
-    <h3>{{ "POSTDETAIL.RELATEDPOST" | translate }}</h3>
-  </div>
-
-  <div class="column is-4" *ngFor="let postRelated of postDetail.postRelateds">
-    <app-post-related
-      [postRelated]="postRelated"
-      (postClick)="onPostRelatedClick(event$)"
-    ></app-post-related>
-  </div>
-</div>

@@ -1,5 +1,7 @@
 export class Comment {
-    public Id: string;
-    public Author: string;
-    public Text: string;
+    public id: string;
+    public author: string;
+    public text: string;
+    public date: Date;
+    public authorThumb: string;
 }
