@@ -23,4 +23,8 @@ export class PostReadContainerComponent {
   onPostRelatedClick(event: number) {
     console.log('TODO pr ' + event);
   }
+
+  onAddComment(event: Comment) {
+    console.log('TODO add Comment ' + event);
+  }
 }

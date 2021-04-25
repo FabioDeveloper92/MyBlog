@@ -23,6 +23,15 @@
     "RELATEDPOST": "Related Post",
     "DISCUSSION": "Discussion"
   },
+  "COMMENTFORM": {
+    "POSTCOMMENT": "Post Comment",
+    "NAME": "Name",
+    "EMAIL": "Email",
+    "ADDCOMMENT": "Add Comment",
+    "NAMEISNOTVALID": "Name is not valid",
+    "EMAILISNOTVALID": "Mail is not valid",
+    "COMMENTISNOTVALID": "Comment is not valid"
+  },
   "CATEGORY": {
     "BLOG": {
       "ANGULAR": "Angular"

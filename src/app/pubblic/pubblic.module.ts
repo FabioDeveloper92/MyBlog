@@ -16,6 +16,7 @@ import { PubblicReducers } from './pubblic.reducers';
 import { PubblicRoutes } from './pubblic.routes';
 import { PostService } from './services/post.service';
 import { CommentViewComponent } from './component/comment-view/comment-view.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,9 @@ import { CommentViewComponent } from './component/comment-view/comment-view.comp
   ],
   imports: [
     CommonModule,
-
+    ReactiveFormsModule,
+    FormsModule,
+    
     StoreModule.forFeature('pubblic', PubblicReducers),
     EffectsModule.forFeature([HomeEffects, PostReadEffects]),
     RouterModule.forChild(PubblicRoutes),

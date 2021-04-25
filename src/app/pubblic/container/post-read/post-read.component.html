@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div class="columns is-multiline" >
+  <div class="columns is-multiline">
     <div class="column is-12">
       <h3>
         {{ "POSTREAD.DISCUSSION" | translate }} ({{
@@ -35,10 +35,8 @@
       </h3>
     </div>
 
-    <div class="columns is-multiline">
-      <div class="column is-12">
-        <app-comment-form></app-comment-form>
-      </div>
+    <div class="column is-12">
+      <app-comment-form (addComment)="onAddComment($event)"></app-comment-form>
     </div>
 
     <div class="column is-12" *ngIf="(postDetail$ | async).comments">
