@@ -1,6 +1,6 @@
 {
   "TOPBAR": {
-    "ARTICLES": "Articles",
+    "BLOG": "Blog",
     "BOOK": "Book",
     "LOGIN": "Login",
     "SIGNUP": "Signup"
@@ -31,6 +31,9 @@
     "NAMEISNOTVALID": "Name is not valid",
     "EMAILISNOTVALID": "Mail is not valid",
     "COMMENTISNOTVALID": "Comment is not valid"
+  },
+  "BLOG": {
+    "TITLEBLOG": "My Blog"
   },
   "CATEGORY": {
     "BLOG": {

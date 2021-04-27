@@ -15,6 +15,7 @@
       }}</span>
     </div>
     <div class="comment-number">
+      <span *ngIf="postDetail.comments.length > 0">{{ postDetail.comments?.length }}</span>
       {{ postDetail.comments?.length | commentNumberTranslate | translate }}
     </div>
   </div>

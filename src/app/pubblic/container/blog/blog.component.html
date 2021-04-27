@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="columns">
+      <div class="column is-12 has-text-centered">
+        <h2>{{ "BLOG.TITLEBLOG" | translate }}</h2>
+      </div>
+    </div>
+    <div class="columns is-multiline">
+      <div class="column is-4" *ngFor="let resumePost of resumesPost$ | async">
+        <app-resume-post
+          [resumePost]="resumePost"
+          (postClick)="onPostClick($event)"
+          (categoryClick)="onCategoryClick($event)"
+        ></app-resume-post>
+      </div>
+    </div>
+  </div>

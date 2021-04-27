@@ -10,9 +10,9 @@ import { ResumePost } from '../models/resume-post.model';
 export class PostService {
   constructor() {}
 
-  list(): Observable<ResumePost[]> {
+  list(limit: number): Observable<ResumePost[]> {
     let resumesPost: ResumePost[] = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < limit; i++) {
       let res: ResumePost = {
         id: '_' + i,
         title: 'myPost' + i,
@@ -88,5 +88,10 @@ export class PostService {
     };
 
     return of(postDetail);
+  }
+
+  addComment(comment: Comment): Observable<void>{
+    console.log(comment);
+    return of();
   }
 }

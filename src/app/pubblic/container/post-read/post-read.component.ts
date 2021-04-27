@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Comment } from '../../models/comment.model';
 import { PostDetail } from '../../models/post-detail.model';
+import { OpenPostDetailAction } from '../home/home.actions';
+import { AddCommentPostAction } from '../post-read/post-read.actions';
 import { selectPostDetail } from '../post-read/post-read.selectors';
 import { PostReadState } from './post-read.state';
 
@@ -20,11 +23,11 @@ export class PostReadContainerComponent {
     console.log('TODO category ' + event);
   }
 
-  onPostRelatedClick(event: number) {
-    console.log('TODO pr ' + event);
+  onPostRelatedClick(event: string) {
+    this.store.dispatch(new OpenPostDetailAction(event));
   }
 
   onAddComment(event: Comment) {
-    console.log('TODO add Comment ' + event);
+    this.store.dispatch(new AddCommentPostAction(event));
   }
 }

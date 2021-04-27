@@ -3,26 +3,33 @@ import { Effect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { GoAction } from '../../../router.actions';
+import { ofRoute } from '../../../router.operator';
 import { PostService } from '../../services/post.service';
 import {
   OpenPostDetailAction,
   OPEN_POST_DETAIL,
-  ResumePostListAction,
-  ResumePostListCompleteAction,
-  ResumePostListErrorAction,
-  RESUMEPOST_LIST,
-  RESUMEPOST_LIST_ERROR,
-} from './home.actions';
+  PostListAction,
+  PostListCompleteAction,
+  PostListErrorAction,
+  POST_LIST,
+  POST_LIST_ERROR,
+} from './blog.actions';
 
 @Injectable()
-export class HomeEffects {
+export class PostEffects {
+  @Effect()
+  mapRouteToGet$ = this.action$.pipe(
+    ofRoute('blog'),
+    map(() => new PostListAction())
+  );
+
   @Effect()
   list$ = this.action$.pipe(
-    ofType<ResumePostListAction>(RESUMEPOST_LIST),
+    ofType<PostListAction>(POST_LIST),
     switchMap(() =>
-      this.postService.list(3).pipe(
-        map((items) => new ResumePostListCompleteAction(items)),
-        catchError((error) => of(new ResumePostListErrorAction(error)))
+      this.postService.list(5).pipe(
+        map((items) => new PostListCompleteAction(items)),
+        catchError((error) => of(new PostListErrorAction(error)))
       )
     )
   );
@@ -35,7 +42,7 @@ export class HomeEffects {
 
   @Effect({ dispatch: false })
   notifyError = this.action$.pipe(
-    ofType<ResumePostListErrorAction>(RESUMEPOST_LIST_ERROR),
+    ofType<PostListErrorAction>(POST_LIST_ERROR),
     tap((action) => {
       console.log(action.payload);
     })
