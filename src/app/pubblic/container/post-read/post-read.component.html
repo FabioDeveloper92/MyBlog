@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" [locker]="isBusyPostRead$ | async">
   <div class="column is-12">
     <app-post-detail
       [postDetail]="postDetail$ | async"
@@ -35,7 +35,10 @@
     </div>
 
     <div class="column is-12">
-      <app-comment-form (addComment)="onAddComment($event)"></app-comment-form>
+      <app-comment-form
+        [isBusyAddComment]="isBusyAddComment$ | async"
+        (addComment)="onAddComment($event)"
+      ></app-comment-form>
     </div>
 
     <div class="column is-12" *ngIf="(postDetail$ | async).comments">

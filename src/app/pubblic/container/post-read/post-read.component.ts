@@ -5,7 +5,11 @@ import { Comment } from '../../models/comment.model';
 import { PostDetail } from '../../models/post-detail.model';
 import { OpenPostDetailAction } from '../home/home.actions';
 import { AddCommentPostAction } from '../post-read/post-read.actions';
-import { selectPostDetail } from '../post-read/post-read.selectors';
+import {
+  selectIsBusyAddComment,
+  selectIsBusyPostRead,
+  selectPostDetail,
+} from '../post-read/post-read.selectors';
 import { PostReadState } from './post-read.state';
 
 @Component({
@@ -14,9 +18,13 @@ import { PostReadState } from './post-read.state';
 })
 export class PostReadContainerComponent {
   postDetail$: Observable<PostDetail>;
+  isBusyAddComment$: Observable<boolean>;
+  isBusyPostRead$: Observable<boolean>;
 
   constructor(private store: Store<PostReadState>) {
     this.postDetail$ = this.store.select(selectPostDetail);
+    this.isBusyAddComment$ = this.store.select(selectIsBusyAddComment);
+    this.isBusyPostRead$ = this.store.select(selectIsBusyPostRead);
   }
 
   onCategoryClick(event: number) {

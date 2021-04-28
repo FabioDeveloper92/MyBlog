@@ -53,7 +53,8 @@
         <button
           class="button"
           (click)="onAddComment()"
-          [disabled]="!addCommentForm.valid"
+          [locker]="isBusyAddComment"
+          [disabled]="!addCommentForm.valid || isBusyAddComment"
         >
           {{ "COMMENTFORM.POSTCOMMENT" | translate }}
         </button>

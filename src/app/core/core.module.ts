@@ -8,11 +8,13 @@ import { LockerService } from './services/locker.service';
 import { DivBgImageDirective } from './directives/div-bg-image.directive';
 import { CategoryBlogPipe } from './pipes/category-blog.pipe';
 import { CommentNumberTranslatePipe } from './pipes/comment-number-translate.pipe';
+import { LockerDirective } from './directives/locker.directive';
 
 @NgModule({
   declarations: [
     TopBarComponent,
     DivBgImageDirective,
+    LockerDirective,
     CategoryBlogPipe,
     CommentNumberTranslatePipe
   ],
@@ -26,6 +28,7 @@ import { CommentNumberTranslatePipe } from './pipes/comment-number-translate.pip
     TopBarComponent,
     TranslateModule,
     DivBgImageDirective,
+    LockerDirective,
     CategoryBlogPipe,
     CommentNumberTranslatePipe
   ],

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" [locker]="isBusyPostList$ | async">
     <div class="columns">
       <div class="column is-12 has-text-centered">
         <h2>{{ "BLOG.TITLEBLOG" | translate }}</h2>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -11,6 +11,7 @@ import {
   templateUrl: './comment-form.component.html',
 })
 export class CommentFormComponent implements OnInit {
+  @Input() isBusyAddComment: boolean;
   @Output() addComment = new EventEmitter<Comment>();
 
   addCommentForm: FormGroup;
