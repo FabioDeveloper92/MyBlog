@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  startWith,
+  mergeMap,
   switchMap,
   tap,
   withLatestFrom,
@@ -30,20 +30,20 @@ import {
   SetupLanguageAction,
   SETUP_LANGUAGE,
 } from './reducers/language/language.actions';
-import { selectLanguages } from './reducers/language/language.selectors';
 import { GoAction } from './router.actions';
 import { ConfigService } from './services/config.service';
 import { contains } from 'ramda';
-import { LanguageState } from './reducers/language/language.state';
+import { GetUserInfoAction } from './authentication/auth.actions';
+import { GetLanguageState } from './reducers/language/language.selectors';
+import { JwtService } from './authentication/services/jwt.service';
 
 @Injectable()
 export class ConfigEffects {
   @Effect()
   getConfig$ = this.actions$.pipe(
-    startWith(new GetConfigAction()),
     ofType<GetConfigAction>(GET_CONFIG),
     tap(() => this.lockerService.Lock()),
-    switchMap((_) =>
+    switchMap(() =>
       this.configService.get().pipe(
         map((cfg) => new GetConfigCompleteAction(cfg)),
         catchError((error) => of(new GetConfigErrorAction(error)))
@@ -51,28 +51,31 @@ export class ConfigEffects {
     )
   );
 
-  @Effect({dispatch: false})
+  @Effect()
   configComplete$ = this.actions$.pipe(
     ofType<GetConfigCompleteAction>(GET_CONFIG_COMPLETE),
     tap(() => this.lockerService.Unlock()),
-    map(()=> new SetupLanguageAction())
+    mergeMap(() => [
+      new GetUserInfoAction(this.jwtService.getToken()),
+      new SetupLanguageAction(),
+    ])
   );
 
   @Effect()
   setupLanguage$ = this.actions$.pipe(
-    startWith(new SetupLanguageAction()),
     ofType<SetupLanguageAction>(SETUP_LANGUAGE),
-    map(() => {
-      const languageDefaultValue = 'en';
-
-      this.translateService.addLangs([languageDefaultValue]);
-      this.translateService.setDefaultLang(languageDefaultValue);
-
+    withLatestFrom(
+      this.store.select(GetLanguageState),
+      (_, langState) => langState
+    ),
+    map((langState) => {
       const browserLang = this.translateService.getBrowserLang();
-
-      const lang = contains(browserLang, languageDefaultValue)
+      const lang = contains(browserLang, langState.languages)
         ? browserLang
-        : languageDefaultValue;
+        : 'en';
+
+      this.translateService.addLangs(langState.languages);
+      this.translateService.setDefaultLang(lang);
 
       return new ChangeLanguageAction(lang);
     })
@@ -92,14 +95,14 @@ export class ConfigEffects {
   @Effect({ dispatch: false })
   notifyErrorLanguage$ = this.actions$.pipe(
     ofType<ChangeLanguageErrorAction>(CHANGE_LANGUAGE_ERROR),
-      tap(({ payload }) => {
-        if (payload.code === 404) {
-          this.store.dispatch(new GoAction({ path: ['not-found'] }));
-        } else {
-          console.log(payload.text);
-        }
-      })
-    );
+    tap(({ payload }) => {
+      if (payload.code === 404) {
+        this.store.dispatch(new GoAction({ path: ['not-found'] }));
+      } else {
+        console.log(payload.text);
+      }
+    })
+  );
 
   @Effect({ dispatch: false })
   configError$ = this.actions$.pipe(
@@ -112,6 +115,7 @@ export class ConfigEffects {
     private store: Store<AppState>,
     private configService: ConfigService,
     private lockerService: LockerService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private jwtService: JwtService
   ) {}
 }

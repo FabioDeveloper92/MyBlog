@@ -1,5 +1,5 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
@@ -7,7 +7,7 @@ import {
   RouterStateSerializer,
   StoreRouterConnectingModule,
 } from '@ngrx/router-store';
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from '../environments/environment';
@@ -16,6 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppReducers } from './app.reducers';
 import { AppRoutes } from './app.routes';
+import { AppState } from './app.state';
+import { AuthenticationModule } from './authentication/authentication.module';
+import { GetConfigAction } from './config.actions';
 import { ConfigEffects } from './config.effects';
 import { NotFoundComponent } from './containers/not-found/not-found.component';
 import { CoreModule } from './core/core.module';
@@ -34,6 +37,7 @@ import { ConfigService } from './services/config.service';
     AppRoutingModule,
 
     PubblicModule,
+    AuthenticationModule,
 
     TranslateModule.forRoot({
       loader: {
@@ -65,6 +69,17 @@ import { ConfigService } from './services/config.service';
     {
       provide: RouterStateSerializer,
       useClass: CustomRouterStateSerializer,
+    },
+    
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (store: Store<AppState>) => {
+        return () => {
+          store.dispatch(new GetConfigAction());
+        };
+      },
+      multi: true,
+      deps: [Store],
     },
   ],
   exports: [CoreModule],
