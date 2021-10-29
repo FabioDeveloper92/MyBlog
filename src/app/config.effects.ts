@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { iif, of } from 'rxjs';
 import {
   catchError,
   map,
@@ -35,7 +35,7 @@ import { ConfigService } from './services/config.service';
 import { contains } from 'ramda';
 import { GetUserInfoAction } from './authentication/auth.actions';
 import { GetLanguageState } from './reducers/language/language.selectors';
-import { JwtService } from './authentication/services/jwt.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class ConfigEffects {
@@ -56,8 +56,8 @@ export class ConfigEffects {
     ofType<GetConfigCompleteAction>(GET_CONFIG_COMPLETE),
     tap(() => this.lockerService.Unlock()),
     mergeMap(() => [
-      new GetUserInfoAction(this.jwtService.getToken()),
-      new SetupLanguageAction(),
+      new GetUserInfoAction(this.cookieService.get('STKN')),
+      new SetupLanguageAction()
     ])
   );
 
@@ -116,6 +116,6 @@ export class ConfigEffects {
     private configService: ConfigService,
     private lockerService: LockerService,
     private translateService: TranslateService,
-    private jwtService: JwtService
+    private cookieService: CookieService
   ) {}
 }

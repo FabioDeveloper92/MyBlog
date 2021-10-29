@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import {
   GetUserInfoAction,
   GetUserInfoCompleteAction,
@@ -9,7 +10,9 @@ import {
   GET_USERINFO,
   GET_USERINFO_COMPLETE,
   GET_USERINFO_ERROR,
+  LoggedInErrorGoogleAction,
   LoggedInGoogleAction,
+  LOGGED_IN_ERROR_GOOGLE,
   LOGGED_IN_GOOGLE,
   LOGOUT,
   LogoutAction,
@@ -31,7 +34,10 @@ export class AuthEffects {
 
   @Effect()
   getUserInfoError$ = this.actions$.pipe(
-    ofType<GetUserInfoErrorAction>(GET_USERINFO_ERROR),
+    ofType<GetUserInfoErrorAction | LoggedInErrorGoogleAction>(
+      GET_USERINFO_ERROR,
+      LOGGED_IN_ERROR_GOOGLE
+    ),
     map((_) => new LogoutAction())
   );
 
@@ -41,19 +47,32 @@ export class AuthEffects {
     switchMap((action) =>
       this.authenticationService.saveUserInfo(action.payload).pipe(
         map((token) => new GetUserInfoAction(token)),
-        catchError((error) => of(new GetUserInfoErrorAction(error)))
+        catchError((error) => of(new LoggedInErrorGoogleAction(error)))
       )
     )
   );
 
   @Effect({ dispatch: false })
+  getUserInfoComplete$ = this.actions$.pipe(
+    ofType<GetUserInfoCompleteAction>(GET_USERINFO_COMPLETE),
+    tap((action) => {
+      if (action?.payload)
+        this.cookieService.set('STKN', action.payload.internalToken);
+    })
+  );
+
+  @Effect({ dispatch: false })
   logout$ = this.actions$.pipe(
     ofType<LogoutAction>(LOGOUT),
-    map(() => this.authenticationService.logout())
+    tap((_) => {
+      this.authenticationService.logout(this.cookieService.get('STKN'));
+      this.cookieService.delete('STKN');
+    })
   );
 
   constructor(
     private actions$: Actions,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private cookieService: CookieService
   ) {}
 }

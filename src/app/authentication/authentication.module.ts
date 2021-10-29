@@ -11,10 +11,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './auth.effects';
 import { AuthReducers } from './auth.reducers';
 import { AuthenticationService } from './services/authentication.service';
-import { JwtService } from './services/jwt.service';
 import { AuthenticationContainerComponent } from './containers/authentication/authentication.component';
 import { RouterModule } from '@angular/router';
 import { AuthRoutes } from './auth.routes';
+import { AppHttpInterceptor } from './app.http-interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [GoogleLoginComponent, AuthenticationContainerComponent],
@@ -28,8 +30,12 @@ import { AuthRoutes } from './auth.routes';
   exports: [GoogleLoginComponent],
   providers: [
     AuthenticationService,
-    JwtService,
-
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppHttpInterceptor,
+      multi: true,
+    },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

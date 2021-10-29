@@ -1,43 +1,33 @@
 import { Injectable } from '@angular/core';
-import { SocialAuthService } from 'angularx-social-login';
 import { Observable, of } from 'rxjs';
-import { UserInfo } from '../model/user-info.model';
-import { JwtService } from './jwt.service';
+import { AddUserInfo } from '../model/add-user-info.model';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config.service';
-import { GoogleLoginProvider } from 'angularx-social-login';
+import { UserInfo } from '../model/user-info.model';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(
-    private http: HttpClient,
-    private configService: ConfigService,
-    private jwtService: JwtService,
-    private socialAuthService: SocialAuthService
-  ) {
-    this.socialAuthService.authState.subscribe((user) => {
-      debugger;
-    });
-
-  }
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
   getUserInfo(token: string): Observable<UserInfo> {
-    this.getToken();
-    debugger;
+    if (!token) return of(null);
+
     return this.http.get<UserInfo>(
-      this.configService.buildApiUrl('api/user/' + token)
+      this.configService.buildApiUrl(`api/user/${token}`)
     );
   }
 
-  saveUserInfo(userInfo: UserInfo): Observable<string> {
+  saveUserInfo(userInfo: AddUserInfo): Observable<string> {
     return this.http.post<string>(
       this.configService.buildApiUrl('api/user'),
-      userInfo
+      userInfo,
+      { responseType: 'text' as 'json' }
     );
   }
 
-  logout() {
-    // this.socialAuthService.signOut();
-    // this.jwtService.destroyUser();
+  logout(token: string): Observable<void> {
+    return this.http.delete<void>(
+      this.configService.buildApiUrl('api/user')
+    );
   }
 }

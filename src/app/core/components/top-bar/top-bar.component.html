@@ -29,8 +29,11 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button" [routerLink]="['/login']">
+          <a class="button" *ngIf="!(isAuthenticated$ | async)" [routerLink]="['/login']">
             {{ 'TOPBAR.SIGNUP' | translate}} / {{ 'TOPBAR.LOGIN' | translate}}
+          </a>
+          <a class="logout" *ngIf="isAuthenticated$ | async" (click)="Logout()">
+              Logout
           </a>
         </div>
       </div>

@@ -25,8 +25,8 @@ export function AuthReducers(
     case GET_USERINFO_COMPLETE:
       return {
         ...state,
-        isAuthenticated: false,
-        userInfo: action.payload,
+        isAuthenticated: action?.payload != null,
+        userInfo: action?.payload,
         hasFinished: true,
       };
     case GET_USERINFO_ERROR:
