@@ -1,0 +1,76 @@
+ <div
+  class="media-content"
+  [formGroup]="registrationForm"
+>
+<div class="control has-icons-left">
+    <span class="icon is-small is-left">
+      <i class="fas fa-user"></i>
+    </span>
+    <input
+      class="input"
+      type="text"
+      placeholder="{{ 'REGISTRATION-FORM.NAME' | translate }}"
+      formControlName="name"
+      [class.is-danger]="!ctrlName.valid && ctrlName.touched"
+    />
+    <label *ngIf="!ctrlName.valid && ctrlName.touched">{{
+      "REGISTRATION-FORM.NAMEISNOTVALID" | translate
+    }}</label>
+  </div>
+  <div class="control has-icons-left">
+    <span class="icon is-small is-left">
+      <i class="fas fa-user"></i>
+    </span>
+    <input
+      class="input"
+      type="text"
+      placeholder="{{ 'REGISTRATION-FORM.SURNAME' | translate }}"
+      formControlName="surname"
+      [class.is-danger]="!ctrlSurname.valid && ctrlSurname.touched"
+    />
+    <label *ngIf="!ctrlSurname.valid && ctrlSurname.touched">{{
+      "REGISTRATION-FORM.SURNAMEISNOTVALID" | translate
+    }}</label>
+  </div>
+  <div class="control has-icons-left">
+    <span class="icon is-small is-left">
+      <i class="fas fa-envelope"></i>
+    </span>
+    <input
+      class="input"
+      type="text"
+      placeholder="{{ 'REGISTRATION-FORM.EMAIL' | translate }}"
+      formControlName="email"
+      [class.is-danger]="!ctrlEmail.valid && ctrlEmail.touched"
+    />
+    <label *ngIf="!ctrlEmail.valid && ctrlEmail.touched">{{
+      "REGISTRATION-FORM.EMAILISNOTVALID" | translate
+    }}</label>
+  </div>
+  <div class="control has-icons-left">
+    <span class="icon is-small is-left">
+      <i class="fas fa-lock"></i>
+    </span>
+    <input
+      class="input"
+      type="password"
+      placeholder="{{ 'REGISTRATION-FORM.PASSWORD' | translate }}"
+      formControlName="password"
+      [class.is-danger]="!ctrlPassword.valid && ctrlPassword.touched"
+    />
+    <label *ngIf="!ctrlPassword.valid && ctrlPassword.touched">{{
+      "REGISTRATION-FORM.PASSWORDISNOTVALID" | translate
+    }}</label>
+  </div>
+
+  <div class="control">
+    <button
+      class="button is-primary is-fullwidth"
+      (click)="onSignup()"
+      [locker]="isBusyLoginSignup"
+      [disabled]="!registrationForm.valid"
+    >
+      {{ "REGISTRATION-FORM.SIGNUP" | translate }}
+    </button>
+  </div>
+</div>

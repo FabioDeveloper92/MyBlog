@@ -17,15 +17,30 @@ import { AuthRoutes } from './auth.routes';
 import { AppHttpInterceptor } from './app.http-interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { CoreModule } from '../core/core.module';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { RegistrationFormComponent } from './components/registration-form/registration-form.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [GoogleLoginComponent, AuthenticationContainerComponent],
+  declarations: [
+    GoogleLoginComponent,
+    AuthenticationContainerComponent,
+    LoginFormComponent,
+    RegistrationFormComponent,
+  ],
   imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+
     SocialLoginModule,
     StoreModule.forFeature('auth', AuthReducers),
     EffectsModule.forFeature([AuthEffects]),
-
     RouterModule.forChild(AuthRoutes),
+
+    CoreModule.forRoot(),
   ],
   exports: [GoogleLoginComponent],
   providers: [

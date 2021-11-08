@@ -4,4 +4,6 @@ export class AuthState {
   isAuthenticated: boolean;
   userInfo: UserInfo;
   hasFinished: boolean;
+  showLoginTab: boolean;
+  isBusyLoginSignup: boolean;
 }

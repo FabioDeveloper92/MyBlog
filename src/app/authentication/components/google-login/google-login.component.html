@@ -1,5 +1,6 @@
-<div>
-  <button type="button" (click)="onLogin()" class="btn btn-danger">
-    Login with Google
+<div [class.is-hidden]="isBusyLoginSignup">
+  <button type="button" (click)="onLogin()" class="button google-auth">
+    <div class="google-logo"></div>
+    <div class="google-text">Login with Google</div>
   </button>
 </div>

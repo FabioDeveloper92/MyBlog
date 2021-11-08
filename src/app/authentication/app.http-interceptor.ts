@@ -14,10 +14,24 @@ import { ErrorPayload } from '../core/model/error-payload.model';
 import { LogoutAction } from './auth.actions';
 import { AuthState } from './auth.state';
 import { catchError } from 'rxjs/operators';
+import {
+  selectIsAuthenticated,
+  selectUserInfo,
+} from '../authentication/auth.selector';
+import { UserInfo } from './model/user-info.model';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class AppHttpInterceptor implements HttpInterceptor {
-  constructor(private store: Store<AuthState>, private injector: Injector) {}
+  isAuthenticated: boolean;
+  userInfo: UserInfo;
+
+  constructor(private store: Store<AuthState>, private injector: Injector) {
+    this.store
+      .select(selectIsAuthenticated)
+      .subscribe((x) => (this.isAuthenticated = x));
+    this.store.select(selectUserInfo).subscribe((x) => (this.userInfo = x));
+  }
 
   intercept(
     request: HttpRequest<any>,
@@ -27,19 +41,22 @@ export class AppHttpInterceptor implements HttpInterceptor {
 
     const path = new Uri(request.url).path();
 
-    const mustAuthenticate = path.indexOf('api/config') === -1;
-    if (mustAuthenticate) {
-      //   if (!this.adalSvc.userInfo.authenticated) {
-      //     return _throw('Unauthorized');
-      //   }
-      //   if (!request.headers.has('NO-AUTHORIZATION')) {
-      //     request = request.clone({
-      //       setHeaders: {
-      //         Authorization: `Bearer ${this.adalSvc.userInfo.token}`,
-      //       },
-      //     });
-      //   }
-    }
+    const canBeAuthenticate = path.indexOf('api/config') === -1;
+    const getI18n = path.indexOf('assets/i18n') === -1;
+
+    // if (!canBeAuthenticate && !getI18n) {
+    //   if (!request.headers.has('NO-AUTHORIZATION')) {
+    //     if (!this.isAuthenticated) {
+    //       return throwError('Unauthorized');
+    //     }
+
+    //     request = request.clone({
+    //       setHeaders: {
+    //         Authorization: `Bearer ${this.userInfo.internalToken}`,
+    //       },
+    //     });
+    //   }
+    // }
 
     request = request.clone({
       setHeaders: {
@@ -47,7 +64,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
         Pragma: `no-cache`,
         Expires: `Sat, 01 Jan 2000 00:00:00 GMT`,
         'If-Modified-Since': `0`,
-      }
+      },
     });
 
     return next.handle(request).pipe(

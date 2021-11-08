@@ -5,6 +5,29 @@
     "LOGIN": "Login",
     "SIGNUP": "Signup"
   },
+  "AUTHENTICATION": {
+    "OR": "Or",
+    "SIGNUP": "Signup"
+  },
+  "LOGIN-FORM": {
+    "EMAIL": "Email",
+    "EMAILISNOTVALID": "Insert valid email",
+    "PASSWORD": "Password",
+    "PASSWORDISNOTVALID": "Password not valid",
+    "LOGIN": "Login"
+  },
+  "REGISTRATION-FORM": {
+    "NAME": "Name",
+    "NAMEISNOTVALID": "Name is mandatory",
+    "SURNAME": "Surname",
+    "SURNAMEISNOTVALID": "Surname is mandatory",
+    "EMAIL": "Email",
+    "EMAILISNOTVALID": "Insert valid email",
+    "PASSWORD": "Password",
+    "PASSWORDISNOTVALIDLENGHT": "Password must be 7 characters",
+    "PASSWORDISNOTVALID": "Password must be one upper char, one lower char, one number, one special symbol",
+    "SIGNUP": "Signup"
+  },
   "GENERAL": {
     "UNDEFINED": "Undefined",
     "NOCOMMENT": "No Comments",

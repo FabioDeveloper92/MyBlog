@@ -1,1 +1,48 @@
-<app-google-login></app-google-login>
+<div class="container">
+  <div class="columns is-centered">
+    <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+      <div class="tabs is-centered is-boxed">
+        <ul>
+          <li
+            [class.is-active]="isShowTabLogin$ | async"
+            (click)="onShowLoginTab()"
+          >
+            <a>Login</a>
+          </li>
+          <li
+            [class.is-active]="!(isShowTabLogin$ | async)"
+            (click)="onShowSignupTab()"
+          >
+            <a>{{ "AUTHENTICATION.SIGNUP" | translate }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="content-tab" [class.is-hidden]="!(isShowTabLogin$ | async)">
+        <div>
+          <app-login-form
+            [isBusyLoginSignup]="isBusyLoginSignup$ | async"
+            (login)="onLogin($event)"
+          ></app-login-form>
+        </div>
+
+        <div class="hr-text-center has-text-centered">
+          {{ "AUTHENTICATION.OR" | translate }}
+          <span></span>
+        </div>
+
+        <div>
+          <app-google-login
+            [isBusyLoginSignup]="isBusyLoginSignup$ | async"
+            (loginGoogle)="onLoginGoogle($event)"
+          ></app-google-login>
+        </div>
+      </div>
+      <div class="content-tab" [class.is-hidden]="isShowTabLogin$ | async">
+        <app-registration-form
+          [isBusyLoginSignup]="isBusyLoginSignup$ | async"
+          (signup)="onSignup($event)"
+        ></app-registration-form>
+      </div>
+    </div>
+  </div>
+</div>

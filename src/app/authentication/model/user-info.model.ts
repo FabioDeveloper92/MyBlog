@@ -1,6 +1,4 @@
 export class UserInfo {
-  constructor() {}
-  
   id: string;
   name: string;
   surname: string;

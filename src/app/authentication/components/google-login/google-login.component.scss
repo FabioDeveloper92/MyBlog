@@ -1,0 +1,24 @@
+.button.google-auth {
+  background-color: #4285f4;
+  border: 1px solid #4285f4;
+  color: white;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+  justify-content: unset;
+}
+
+.button .google-logo {
+  height: 38px;
+  width: 38px;
+  background-image: url(https://webassets.mongodb.com/_com_assets/cms/google_logo_button-k3uhmqncx5.svg);
+  background-size: contain;
+  margin-right: 2px;
+}
+
+.button .google-text {
+  padding: 5px;
+  position: relative;
+  left: 15%;
+}

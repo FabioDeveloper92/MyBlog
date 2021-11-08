@@ -25,9 +25,23 @@ export class AuthenticationService {
     );
   }
 
-  logout(token: string): Observable<void> {
-    return this.http.delete<void>(
-      this.configService.buildApiUrl('api/user')
+  saveUserInfoFromGoogle(userInfo: AddUserInfo): Observable<string> {
+    return this.http.post<string>(
+      this.configService.buildApiUrl('api/usergoogle'),
+      userInfo,
+      { responseType: 'text' as 'json' }
     );
+  }
+
+  signup(userInfo: AddUserInfo): Observable<string> {
+    return this.http.post<string>(
+      this.configService.buildApiUrl('api/userjwt'),
+      userInfo,
+      { responseType: 'text' as 'json' }
+    );
+  }
+
+  logout(token: string): Observable<void> {
+    return this.http.delete<void>(this.configService.buildApiUrl('api/user'));
   }
 }

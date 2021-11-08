@@ -10,17 +10,34 @@ import {
   GET_USERINFO,
   GET_USERINFO_COMPLETE,
   GET_USERINFO_ERROR,
-  LoggedInErrorGoogleAction,
+  LoggedInGoogleErrorAction,
   LoggedInGoogleAction,
-  LOGGED_IN_ERROR_GOOGLE,
+  LOGGED_IN_GOOGLE_ERROR,
   LOGGED_IN_GOOGLE,
   LOGOUT,
   LogoutAction,
+  ShowLoginTabAction,
+  LOGIN_JWT,
+  LoginJwtErrorAction,
+  LOGIN_JWT_ERROR,
+  SignupErrorAction,
+  SIGNUP_ERROR,
+  SignupAction,
+  SIGNUP,
+  SignupCompleteAction,
+  SIGNUP_COMPLETE,
 } from './auth.actions';
 import { AuthenticationService } from './services/authentication.service';
+import { ofRoute } from '../router.operator';
 
 @Injectable()
 export class AuthEffects {
+  @Effect()
+  mapRouteToGet$ = this.actions$.pipe(
+    ofRoute('login'),
+    map(() => new ShowLoginTabAction())
+  );
+
   @Effect()
   getUserInfo$ = this.actions$.pipe(
     ofType<GetUserInfoAction>(GET_USERINFO),
@@ -28,26 +45,6 @@ export class AuthEffects {
       this.authenticationService.getUserInfo(action.payload).pipe(
         map((userInfo) => new GetUserInfoCompleteAction(userInfo)),
         catchError((error) => of(new GetUserInfoErrorAction(error)))
-      )
-    )
-  );
-
-  @Effect()
-  getUserInfoError$ = this.actions$.pipe(
-    ofType<GetUserInfoErrorAction | LoggedInErrorGoogleAction>(
-      GET_USERINFO_ERROR,
-      LOGGED_IN_ERROR_GOOGLE
-    ),
-    map((_) => new LogoutAction())
-  );
-
-  @Effect()
-  loggedInGoogle$ = this.actions$.pipe(
-    ofType<LoggedInGoogleAction>(LOGGED_IN_GOOGLE),
-    switchMap((action) =>
-      this.authenticationService.saveUserInfo(action.payload).pipe(
-        map((token) => new GetUserInfoAction(token)),
-        catchError((error) => of(new LoggedInErrorGoogleAction(error)))
       )
     )
   );
@@ -61,6 +58,34 @@ export class AuthEffects {
     })
   );
 
+  @Effect()
+  getUserInfoError$ = this.actions$.pipe(
+    ofType<GetUserInfoErrorAction>(GET_USERINFO_ERROR),
+    map((_) => new LogoutAction())
+  );
+
+  @Effect()
+  loginJwt$ = this.actions$.pipe(
+    ofType<LoggedInGoogleAction>(LOGIN_JWT),
+    switchMap((action) =>
+      this.authenticationService.saveUserInfoFromGoogle(action.payload).pipe(
+        map((payload) => new GetUserInfoAction(payload)),
+        catchError((error) => of(new LoginJwtErrorAction(error)))
+      )
+    )
+  );
+
+  @Effect()
+  loggedInGoogle$ = this.actions$.pipe(
+    ofType<LoggedInGoogleAction>(LOGGED_IN_GOOGLE),
+    switchMap((action) =>
+      this.authenticationService.saveUserInfoFromGoogle(action.payload).pipe(
+        map((token) => new GetUserInfoAction(token)),
+        catchError((error) => of(new LoggedInGoogleErrorAction(error)))
+      )
+    )
+  );
+
   @Effect({ dispatch: false })
   logout$ = this.actions$.pipe(
     ofType<LogoutAction>(LOGOUT),
@@ -68,6 +93,33 @@ export class AuthEffects {
       this.authenticationService.logout(this.cookieService.get('STKN'));
       this.cookieService.delete('STKN');
     })
+  );
+
+  @Effect()
+  signup$ = this.actions$.pipe(
+    ofType<SignupAction>(SIGNUP),
+    switchMap((action) =>
+      this.authenticationService.signup(action.payload).pipe(
+        map((token) => new SignupCompleteAction(token)),
+        catchError((error) => of(new SignupErrorAction(error)))
+      )
+    )
+  );
+
+  @Effect()
+  signupComplete$ = this.actions$.pipe(
+    ofType<SignupCompleteAction>(SIGNUP_COMPLETE),
+    map((action) => new GetUserInfoAction(action.payload))
+  );
+
+  @Effect({ dispatch: false })
+  errorAfterLogin = this.actions$.pipe(
+    ofType<LoggedInGoogleErrorAction | LoginJwtErrorAction | SignupErrorAction>(
+      LOGGED_IN_GOOGLE_ERROR,
+      LOGIN_JWT_ERROR,
+      SIGNUP_ERROR
+    ),
+    tap((_) => console.log('ERROR AUTH EFFECTS'))
   );
 
   constructor(
