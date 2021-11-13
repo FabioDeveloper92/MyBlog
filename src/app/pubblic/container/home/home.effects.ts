@@ -3,7 +3,7 @@ import { Effect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { GoAction } from '../../../router.actions';
-import { PostService } from '../../services/post.service';
+import { PostService } from '../../../core/services/post.service';
 import {
   OpenPostDetailAction,
   OPEN_POST_DETAIL,

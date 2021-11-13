@@ -1,0 +1,9 @@
+<div class="container">
+  <app-new-post
+    [isBusyPublish]="isBusyPublish$ | async"
+    [isBusySaveDraft]="isBusySaveDraft$ | async"
+    [tagsBlog]="tagsBlog$ | async"
+    (publish)="onPublish($event)"
+    (savedraft)="onSaveDraft($event)"
+  ></app-new-post>
+</div>

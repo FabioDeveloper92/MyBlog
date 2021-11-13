@@ -60,7 +60,24 @@
   },
   "CATEGORY": {
     "BLOG": {
-      "ANGULAR": "Angular"
+      "ANGULAR": "Angular",
+      "CSHARP": "C#",
+      "SQL": "Sql",
+      "MONGODB": "Mongo DB",
+      "PROGRAMMING": "Programming"
     }
+  },
+  "NEWPOST": {
+    "CREATEPOST": "Create your post",
+    "PLACEHOLDER_TEXT": "Write here your article",
+    "INSERTTITLE": "Insert your title",
+    "TITLEISNOTVALID": "Title length between 10 and 30",
+    "IMAGEMAINISNOTVALID": "Image is required",
+    "IMAGETHUMBISNOTVALID": "Image is required",
+    "INSERTIMAGEMAIN": "Insert image thumb",
+    "INSERTTHUMBMAIN": "Insert thumb image",
+    "PUBLISH": "Publish",
+    "SAVEDRAFT": "Save Draft",
+    "SELECTTAGS": "Select Tags (Max 4)"
   }
 }

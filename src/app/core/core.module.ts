@@ -9,6 +9,8 @@ import { DivBgImageDirective } from './directives/div-bg-image.directive';
 import { CategoryBlogPipe } from './pipes/category-blog.pipe';
 import { CommentNumberTranslatePipe } from './pipes/comment-number-translate.pipe';
 import { LockerDirective } from './directives/locker.directive';
+import { TagsService } from './services/tags.service';
+import { PostService } from './services/post.service';
 
 @NgModule({
   declarations: [
@@ -16,28 +18,23 @@ import { LockerDirective } from './directives/locker.directive';
     DivBgImageDirective,
     LockerDirective,
     CategoryBlogPipe,
-    CommentNumberTranslatePipe
+    CommentNumberTranslatePipe,
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    ReactiveFormsModule,
-    TranslateModule,
-  ],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, TranslateModule],
   exports: [
     TopBarComponent,
     TranslateModule,
     DivBgImageDirective,
     LockerDirective,
     CategoryBlogPipe,
-    CommentNumberTranslatePipe
+    CommentNumberTranslatePipe,
   ],
 })
 export class CoreModule {
   public static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
-      providers: [LockerService],
+      providers: [LockerService, TagsService, PostService],
     };
   }
 }

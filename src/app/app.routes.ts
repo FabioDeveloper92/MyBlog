@@ -4,11 +4,6 @@ import { ConfigGuard } from './guards/config.guards';
 
 export const AppRoutes: Routes = [
   {
-    path: 'login',
-    component: NotFoundComponent,
-    canActivate: [ConfigGuard],
-  },
-  {
     path: '**',
     component: NotFoundComponent,
     canActivate: [ConfigGuard],

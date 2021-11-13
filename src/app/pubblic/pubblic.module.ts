@@ -11,14 +11,13 @@ import { PostDetailComponent } from './component/post-detail/post-detail.compone
 import { PostRelatedComponent } from './component/post-related/post-related.component';
 import { ResumePostComponent } from './component/resume-post/resume-post.component';
 import { BlogContainerComponent } from './container/blog/blog.component';
-import { PostEffects } from './container/blog/blog.effect';
+import { BlogEffects } from './container/blog/blog.effect';
 import { HomeContainerComponent } from './container/home/home.component';
 import { HomeEffects } from './container/home/home.effects';
 import { PostReadContainerComponent } from './container/post-read/post-read.component';
 import { PostReadEffects } from './container/post-read/post-read.effects';
 import { PubblicReducers } from './pubblic.reducers';
 import { PubblicRoutes } from './pubblic.routes';
-import { PostService } from './services/post.service';
 
 @NgModule({
   declarations: [
@@ -37,11 +36,10 @@ import { PostService } from './services/post.service';
     FormsModule,
 
     StoreModule.forFeature('pubblic', PubblicReducers),
-    EffectsModule.forFeature([HomeEffects, PostReadEffects, PostEffects]),
+    EffectsModule.forFeature([HomeEffects, PostReadEffects, BlogEffects]),
     RouterModule.forChild(PubblicRoutes),
 
     CoreModule.forRoot(),
-  ],
-  providers: [PostService],
+  ]
 })
 export class PubblicModule {}

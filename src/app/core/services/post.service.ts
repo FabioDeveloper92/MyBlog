@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { append } from 'ramda';
 import { Observable, of } from 'rxjs';
-import { Comment } from '../models/comment.model';
-import { PostDetail } from '../models/post-detail.model';
-import { RelatedPost } from '../models/related-post.model';
-import { ResumePost } from '../models/resume-post.model';
+import { AddPost } from '../../user/models/add-post.model';
+import { Comment } from '../../pubblic/models/comment.model';
+import { PostDetail } from '../../pubblic/models/post-detail.model';
+import { RelatedPost } from '../../pubblic/models/related-post.model';
+import { ResumePost } from '../../pubblic/models/resume-post.model';
 
 @Injectable()
 export class PostService {
@@ -82,16 +83,23 @@ export class PostService {
       date: new Date(),
       createdBy: 'admin',
       comments: tmpComment,
-      text:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       postRelateds: resumesPost,
     };
 
     return of(postDetail);
   }
 
-  addComment(comment: Comment): Observable<void>{
+  addComment(comment: Comment): Observable<void> {
     console.log(comment);
     return of();
+  }
+
+  publishPost(addPost: AddPost): Observable<string> {
+    return of('aaaa');
+  }
+
+  saveDraftPost(addPost: AddPost): Observable<string> {
+    return of('aaaa');
   }
 }

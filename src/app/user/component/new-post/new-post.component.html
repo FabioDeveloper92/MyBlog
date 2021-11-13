@@ -1,0 +1,125 @@
+<div [formGroup]="addPostForm">
+  <div class="columns">
+    <div class="column is-12">{{ "NEWPOST.CREATEPOST" | translate }}</div>
+  </div>
+
+  <div class="columns">
+    <div class="column is-12 add-form-field">
+      <input
+        type="text"
+        class="input is-primary"
+        placeholder="{{ 'NEWPOST.INSERTTITLE' | translate }}"
+        formControlName="title"
+        [class.is-danger]="!ctrlTitle.valid && ctrlTitle.touched"
+      />
+      <label *ngIf="!ctrlTitle.valid && ctrlTitle.touched">{{
+        "NEWPOST.TITLEISNOTVALID" | translate
+      }}</label>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div
+      class="column is-12 add-form-field"
+      [ngClass]="{
+        'is-12': !ctrlImageMain.valid && ctrlImageMain.touched,
+        'is-10': ctrlImageMain.valid
+      }"
+    >
+      <input
+        type="text"
+        class="input is-primary"
+        placeholder="{{ 'NEWPOST.INSERTIMAGEMAIN' | translate }}"
+        formControlName="imageMain"
+        [class.is-danger]="!ctrlImageMain.valid && ctrlImageMain.touched"
+      />
+      <label *ngIf="!ctrlImageMain.valid && ctrlImageMain.touched">{{
+        "NEWPOST.IMAGEMAINISNOTVALID" | translate
+      }}</label>
+    </div>
+
+    <div class="column is-2" *ngIf="ctrlImageMain.valid">
+      <figure class="image is-128x128">
+        <img [src]="ctrlImageMain.value" />
+      </figure>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div
+      class="column add-form-field"
+      [ngClass]="{
+        'is-12': !ctrlImageThumb.valid && ctrlImageThumb.touched,
+        'is-10': ctrlImageThumb.valid
+      }"
+    >
+      <input
+        type="text"
+        class="input is-primary"
+        placeholder="{{ 'NEWPOST.INSERTTHUMBMAIN' | translate }}"
+        formControlName="imageThumb"
+        [class.is-danger]="!ctrlImageThumb.valid && ctrlImageThumb.touched"
+      />
+      <label *ngIf="!ctrlImageThumb.valid && ctrlImageThumb.touched">{{
+        "NEWPOST.IMAGETHUMBISNOTVALID" | translate
+      }}</label>
+    </div>
+
+    <div class="column is-2" *ngIf="ctrlImageThumb.valid">
+      <figure class="image is-128x128">
+        <img [src]="ctrlImageThumb.value" />
+      </figure>
+    </div>
+  </div>
+
+  <div class="columns" *ngIf="tagsBlog.length > 0">
+    <div class="column is-12 add-form-field">
+      <ng-select
+        placeholder="{{ 'NEWPOST.SELECTTAGS' | translate }}"
+        appendTo="body"
+        multiple="true"
+        maxSelectedItems="4"
+        formControlName="tags"
+      >
+        <ng-option *ngFor="let tag of tagsBlog" [value]="tag.Id">
+          {{ tag.Id | categoryBlog | translate }}
+        </ng-option>
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div
+      class="column is-12 add-form-field"
+      [class.is-danger]="!ctrlText.valid && ctrlText.touched"
+    >
+      <angular-editor
+        formControlName="text"
+        [config]="editorConfig"
+      ></angular-editor>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="column is-2">
+      <button
+        class="button is-primary is-fullwidth"
+        (click)="onPublish()"
+        [locker]="isBusyPublish || isBusySaveDraft"
+        [disabled]="!addPostForm.valid || isBusyPublish"
+      >
+        {{ "NEWPOST.PUBLISH" | translate }}
+      </button>
+    </div>
+    <div class="column is-2">
+      <button
+        class="button is-fullwidth"
+        (click)="onSaveDraft()"
+        [locker]="isBusySaveDraft || isBusyPublish"
+        [disabled]="!ctrlTitle.valid || isBusySaveDraft"
+      >
+        {{ "NEWPOST.SAVEDRAFT" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

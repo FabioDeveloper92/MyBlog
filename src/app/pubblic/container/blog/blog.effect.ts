@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { GoAction } from '../../../router.actions';
 import { ofRoute } from '../../../router.operator';
-import { PostService } from '../../services/post.service';
+import { PostService } from '../../../core/services/post.service';
 import {
   OpenPostDetailAction,
   OPEN_POST_DETAIL,
@@ -16,7 +16,7 @@ import {
 } from './blog.actions';
 
 @Injectable()
-export class PostEffects {
+export class BlogEffects {
   @Effect()
   mapRouteToGet$ = this.action$.pipe(
     ofRoute('blog'),

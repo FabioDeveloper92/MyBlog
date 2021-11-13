@@ -1,0 +1,7 @@
+.add-form-field {
+  margin-top: 10px;
+
+  &.is-danger {
+    border: 1px solid red;
+  }
+}

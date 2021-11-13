@@ -42,7 +42,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
     CoreModule.forRoot(),
   ],
-  exports: [GoogleLoginComponent],
   providers: [
     AuthenticationService,
     CookieService,
