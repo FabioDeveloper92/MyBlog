@@ -11,6 +11,7 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { PostService } from '../../../core/services/post.service';
+import { GoAction } from '../../../router.actions';
 import { ofRoute } from '../../../router.operator';
 import { selectRouterStateSnapshot } from '../../../router.selectors';
 import { PublicState } from '../../public.state';
@@ -81,6 +82,12 @@ export class PostReadEffects {
       ADD_COMMENT_POST_ERROR
     ),
     tap((action) => {
+
+      if (action.payload.code === 404) {
+        this.store.dispatch(new GoAction({ path: ['not-found'] }));
+        return;
+      }
+
       console.log(action.payload);
     })
   );

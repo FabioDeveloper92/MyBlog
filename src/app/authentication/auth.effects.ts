@@ -3,6 +3,8 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { GoAction } from '../router.actions';
+import { ofRoute } from '../router.operator';
 import {
   GetUserInfoAction,
   GetUserInfoCompleteAction,
@@ -10,26 +12,24 @@ import {
   GET_USERINFO,
   GET_USERINFO_COMPLETE,
   GET_USERINFO_ERROR,
-  LoggedInGoogleErrorAction,
   LoggedInGoogleAction,
-  LOGGED_IN_GOOGLE_ERROR,
+  LoggedInGoogleErrorAction,
   LOGGED_IN_GOOGLE,
+  LOGGED_IN_GOOGLE_ERROR,
+  LoginJwtErrorAction,
+  LOGIN_JWT,
+  LOGIN_JWT_ERROR,
   LOGOUT,
   LogoutAction,
   ShowLoginTabAction,
-  LOGIN_JWT,
-  LoginJwtErrorAction,
-  LOGIN_JWT_ERROR,
-  SignupErrorAction,
-  SIGNUP_ERROR,
-  SignupAction,
   SIGNUP,
+  SignupAction,
   SignupCompleteAction,
+  SignupErrorAction,
   SIGNUP_COMPLETE,
+  SIGNUP_ERROR,
 } from './auth.actions';
 import { AuthenticationService } from './services/authentication.service';
-import { ofRoute } from '../router.operator';
-import { GoAction } from '../router.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -54,10 +54,12 @@ export class AuthEffects {
   getUserInfoComplete$ = this.actions$.pipe(
     ofType<GetUserInfoCompleteAction>(GET_USERINFO_COMPLETE),
     map((action) => {
+      var existToken = this.cookieService.get('STKN') !== undefined;
+
       if (action?.payload)
         this.cookieService.set('STKN', action.payload.internalToken);
 
-       return new GoAction({ path: ['profile'] });
+      if (!existToken) return new GoAction({ path: ['profile'] });
     })
   );
 

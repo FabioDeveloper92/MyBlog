@@ -9,17 +9,16 @@ import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import * as Uri from 'urijs';
-import { ErrorPayload } from '../core/model/error-payload.model';
-import { LogoutAction } from './auth.actions';
-import { AuthState } from './auth.state';
 import { catchError } from 'rxjs/operators';
+import * as Uri from 'urijs';
 import {
   selectIsAuthenticated,
   selectUserInfo,
 } from '../authentication/auth.selector';
+import { ErrorPayload } from '../core/model/error-payload.model';
+import { LogoutAction } from './auth.actions';
+import { AuthState } from './auth.state';
 import { UserInfo } from './model/user-info.model';
-import { throwError } from 'rxjs';
 
 @Injectable()
 export class AppHttpInterceptor implements HttpInterceptor {

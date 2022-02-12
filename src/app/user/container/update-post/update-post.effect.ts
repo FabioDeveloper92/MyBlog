@@ -14,7 +14,7 @@ import {
 import { PostService } from '../../../core/services/post.service';
 import { TagsService } from '../../../core/services/tags.service';
 import { PublicState } from '../../../public/public.state';
-import { GO } from '../../../router.actions';
+import { GoAction } from '../../../router.actions';
 import { ofRoute } from '../../../router.operator';
 import { selectRouterStateSnapshot } from '../../../router.selectors';
 import {
@@ -44,7 +44,7 @@ import {
 export class UpdatePostEffects {
   @Effect()
   mapRouteToGet$ = this.action$.pipe(
-    ofRoute('updatepost'),
+    ofRoute('updatepost/:id'),
     withLatestFrom(
       this.store.select(selectRouterStateSnapshot),
       (_, router) => router
@@ -114,6 +114,12 @@ export class UpdatePostEffects {
       GET_POST_ERROR
     ),
     tap((action) => {
+      
+      if (action.payload.code === 404) {
+        this.store.dispatch(new GoAction({ path: ['not-found'] }));
+        return;
+      }
+
       console.log(action.payload);
     })
   );
