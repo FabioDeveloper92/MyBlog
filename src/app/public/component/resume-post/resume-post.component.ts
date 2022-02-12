@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ResumePost } from '../../models/resume-post.model';
 
 @Component({
@@ -6,15 +6,13 @@ import { ResumePost } from '../../models/resume-post.model';
   templateUrl: './resume-post.component.html',
   styleUrls: ['./resume-post.component.scss'],
 })
-export class ResumePostComponent implements OnInit {
+export class ResumePostComponent {
   @Input() resumePost: ResumePost;
 
   @Output() postClick = new EventEmitter<string>();
   @Output() categoryClick = new EventEmitter<number>();
 
   constructor() {}
-
-  ngOnInit(): void {}
 
   onPostClick(id: string) {
     this.postClick.emit(id);

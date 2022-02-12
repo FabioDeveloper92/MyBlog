@@ -14,7 +14,7 @@ import { PostReadState } from './post-read.state';
 
 @Component({
   selector: 'app-post-read',
-  templateUrl: './post-read.component.html',
+  templateUrl: './post-read.component.html'
 })
 export class PostReadContainerComponent {
   postDetail$: Observable<PostDetail>;

@@ -4,7 +4,7 @@ import { HomeContainerComponent } from './container/home/home.component';
 import { PostReadContainerComponent } from './container/post-read/post-read.component';
 import { BlogContainerComponent } from './container/blog/blog.component';
 
-export const PubblicRoutes: Route[] = [
+export const PublicRoutes: Route[] = [
   {
     path: '',
     canActivate: [ConfigGuard],

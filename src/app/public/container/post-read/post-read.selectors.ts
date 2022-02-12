@@ -1,12 +1,12 @@
 import { createSelector } from '@ngrx/store';
 import { PostDetail } from '../../models/post-detail.model';
-import { getPubblicState } from '../../pubblic.selector';
-import { PubblicState } from '../../pubblic.state';
+import { getPublicState } from '../../public.selector';
+import { PublicState } from '../../public.state';
 import { PostReadState } from './post-read.state';
 
 export const selectPostReadState = createSelector(
-  getPubblicState,
-  (state: PubblicState) => state.postReadState
+  getPublicState,
+  (state: PublicState) => state.postReadState
 );
 
 export const selectPostDetail = createSelector(

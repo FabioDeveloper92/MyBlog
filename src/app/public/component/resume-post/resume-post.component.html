@@ -1,0 +1,26 @@
+<div class="item-post-feature">
+  <div class="post-image">
+    <div class="bg-img" appDivBgImage [imageUrl]="resumePost.imageUrl"></div>
+  </div>
+  <div class="post-info">
+    <div class="post-category" *ngIf="resumePost.tags.length > 0">
+      <a (click)="onCategoryClick(resumePost.tags[0])" rel="category tag">{{
+        resumePost.tags[0] | categoryBlog | translate
+      }}</a>
+    </div>
+    <h3 class="post-title">
+      <a (click)="onPostClick(resumePost.id)">{{ resumePost.title }}</a>
+    </h3>
+    <div class="post-meta">
+      <div class="date-post">
+        <span class="post-date">{{ resumePost.publishDate | date: "dd MMMM" }}</span>
+      </div>
+      <div class="comment-number">
+        <span *ngIf="resumePost.commentNumber > 0">{{
+          resumePost.commentNumber
+        }}</span>
+        {{ resumePost.commentNumber | commentNumberTranslate | translate }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,9 @@
-import { ActionReducerMap } from "@ngrx/store";
-import { UserState } from './user.state'
-import {AddPostReducers} from './container/add-post/add-post.reducers';
+import { ActionReducerMap } from '@ngrx/store';
+import { AddPostReducers } from './container/add-post/add-post.reducers';
+import { UpdatePostReducers } from './container/update-post/update-post.reducers';
+import { UserState } from './user.state';
 
 export const UserReducers: ActionReducerMap<UserState> = {
-    addPost: AddPostReducers
-}
+  addPost: AddPostReducers,
+  updatePost: UpdatePostReducers,
+};

@@ -3,7 +3,8 @@
     "BLOG": "Blog",
     "BOOK": "Book",
     "LOGIN": "Login",
-    "SIGNUP": "Signup"
+    "SIGNUP": "Signup",
+    "YOURPROFILE": "Your Profile"
   },
   "AUTHENTICATION": {
     "OR": "Or",

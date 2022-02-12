@@ -1,8 +1,10 @@
 <div class="post-heading">
-  <div class="post-cats category-{{ postDetail.category }}">
-    <a (click)="onCategoryClick(postDetail.category)" rel="category tag">
-      {{ postDetail.category | categoryBlog | translate }}
-    </a>
+  <div *ngFor="let tag of postDetail.tags">
+    <span class="post-cats category-{{ tag }}">
+      <a (click)="onCategoryClick(tag)" rel="category tag">
+        {{ tag | categoryBlog | translate }}
+      </a>
+    </span>
   </div>
   <h1 class="post-title title-single">
     {{ postDetail.title }}
@@ -11,13 +13,13 @@
     <div class="ath-post"><span>by</span> {{ postDetail.createdBy }}</div>
     <div class="date-post">
       <span class="post-date">{{
-        postDetail.date | date: "dd MMMM yyyy"
+        postDetail.publishDate
       }}</span>
     </div>
-    <div class="comment-number">
+    <!-- <div class="comment-number">
       <span *ngIf="postDetail.comments.length > 0">{{ postDetail.comments?.length }}</span>
       {{ postDetail.comments?.length | commentNumberTranslate | translate }}
-    </div>
+    </div> -->
   </div>
 </div>
 

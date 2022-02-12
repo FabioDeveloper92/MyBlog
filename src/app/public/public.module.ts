@@ -16,8 +16,8 @@ import { HomeContainerComponent } from './container/home/home.component';
 import { HomeEffects } from './container/home/home.effects';
 import { PostReadContainerComponent } from './container/post-read/post-read.component';
 import { PostReadEffects } from './container/post-read/post-read.effects';
-import { PubblicReducers } from './pubblic.reducers';
-import { PubblicRoutes } from './pubblic.routes';
+import { PublicReducers } from './public.reducers';
+import { PublicRoutes } from './public.routes';
 
 @NgModule({
   declarations: [
@@ -35,11 +35,11 @@ import { PubblicRoutes } from './pubblic.routes';
     ReactiveFormsModule,
     FormsModule,
 
-    StoreModule.forFeature('pubblic', PubblicReducers),
+    StoreModule.forFeature('Public', PublicReducers),
     EffectsModule.forFeature([HomeEffects, PostReadEffects, BlogEffects]),
-    RouterModule.forChild(PubblicRoutes),
+    RouterModule.forChild(PublicRoutes),
 
     CoreModule.forRoot(),
   ]
 })
-export class PubblicModule {}
+export class PublicModule {}

@@ -1,15 +1,15 @@
 import { createEntityAdapter } from '@ngrx/entity';
 import { createSelector } from '@ngrx/store';
 import { ResumePost } from '../../models/resume-post.model';
-import { getPubblicState } from '../../pubblic.selector';
-import { PubblicState } from '../../pubblic.state';
+import { getPublicState } from '../../public.selector';
+import { PublicState } from '../../public.state';
 import { BlogState } from './blog.state';
 
 export const postListAdapter = createEntityAdapter<ResumePost>();
 
 export const selectBlogState = createSelector(
-    getPubblicState,
-    (state: PubblicState) => state.blogState
+    getPublicState,
+    (state: PublicState) => state.blogState
 );
 
 

@@ -29,6 +29,7 @@ import {
 } from './auth.actions';
 import { AuthenticationService } from './services/authentication.service';
 import { ofRoute } from '../router.operator';
+import { GoAction } from '../router.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -49,12 +50,14 @@ export class AuthEffects {
     )
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   getUserInfoComplete$ = this.actions$.pipe(
     ofType<GetUserInfoCompleteAction>(GET_USERINFO_COMPLETE),
-    tap((action) => {
+    map((action) => {
       if (action?.payload)
         this.cookieService.set('STKN', action.payload.internalToken);
+
+       return new GoAction({ path: ['profile'] });
     })
   );
 

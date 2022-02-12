@@ -24,6 +24,10 @@
       <a class="navbar-item" [routerLink]="['/book']">
         {{ 'TOPBAR.BOOK' | translate}}
       </a>
+
+      <a class="navbar-item" *ngIf="isAuthenticated$ | async" [routerLink]="['/profile']">
+        {{ 'TOPBAR.YOURPROFILE' | translate}}
+      </a>
     </div>
 
     <div class="navbar-end">

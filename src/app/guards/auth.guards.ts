@@ -12,7 +12,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   canActivate(): Observable<boolean> {
     return this.store.select(selectIsAuthenticated).pipe((state) => {
-      console.log('aaa');
       if (!state) this.store.dispatch(new GoAction({ path: ['login'] }));
       return state;
     });

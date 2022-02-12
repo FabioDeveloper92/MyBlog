@@ -1,93 +1,27 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { append } from 'ramda';
 import { Observable, of } from 'rxjs';
+import { Comment } from '../../public/models/comment.model';
+import { PostDetail } from '../../public/models/post-detail.model';
+import { ResumePost } from '../../public/models/resume-post.model';
+import { ConfigService } from '../../services/config.service';
 import { AddPost } from '../../user/models/add-post.model';
-import { Comment } from '../../pubblic/models/comment.model';
-import { PostDetail } from '../../pubblic/models/post-detail.model';
-import { RelatedPost } from '../../pubblic/models/related-post.model';
-import { ResumePost } from '../../pubblic/models/resume-post.model';
+import { UpdatePost } from '../../user/models/update-post.model';
 
 @Injectable()
 export class PostService {
-  constructor() {}
+  constructor(private http: HttpClient, private configService: ConfigService) {}
 
   list(limit: number): Observable<ResumePost[]> {
-    let resumesPost: ResumePost[] = [];
-    for (let i = 0; i < limit; i++) {
-      let res: ResumePost = {
-        id: '_' + i,
-        title: 'myPost' + i,
-        imageUrl:
-          'https://baloo.az-theme.net/wp-content/uploads/2019/05/boxed-water-is-better-1463992-unsplash.jpg',
-        category: 1,
-        date: new Date(),
-        commentNumber: i,
-      };
-
-      resumesPost = append(res, resumesPost);
-    }
-
-    return of(resumesPost);
+    return this.http.get<ResumePost[]>(
+      this.configService.buildApiUrl('api/postoverview/' + limit)
+    );
   }
 
   get(id: string): Observable<PostDetail> {
-    let tmpComment: Comment[] = [
-      {
-        id: '_0',
-        author: 'anonymous',
-        text: 'wow è bellissimo questo post',
-        date: new Date(),
-        authorThumb:
-          'https://baloo.az-theme.net/wp-content/uploads/2019/05/valerie-elash-1252873-unsplash-570x524.jpg',
-      },
-      {
-        id: '_3',
-        author: 'anonymous',
-        text: 'wow è bellissimo questo post',
-        date: new Date(),
-        authorThumb:
-          'https://baloo.az-theme.net/wp-content/uploads/2019/05/valerie-elash-1252873-unsplash-570x524.jpg',
-      },
-      {
-        id: '_3',
-        author: 'anonymous2',
-        text: 'stai fermo biiit',
-        date: new Date(),
-        authorThumb:
-          'https://baloo.az-theme.net/wp-content/uploads/2019/05/valerie-elash-1252873-unsplash-570x524.jpg',
-      },
-    ];
-
-    let resumesPost: RelatedPost[] = [];
-    for (let i = 0; i < 3; i++) {
-      let res: RelatedPost = {
-        id: '_' + i,
-        title: 'myPost' + i,
-        imageUrl:
-          'https://baloo.az-theme.net/wp-content/uploads/2019/05/boxed-water-is-better-1463992-unsplash.jpg',
-        date: new Date(),
-        createdBy: 'admin',
-        summary:
-          'sectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris…',
-      };
-
-      resumesPost = append(res, resumesPost);
-    }
-
-    let postDetail: PostDetail = {
-      id: '_1',
-      title: 'My First Post',
-      category: 1,
-      imageUrl:
-        'https://baloo.az-theme.net/wp-content/uploads/2019/05/boxed-water-is-better-1463992-unsplash.jpg',
-      date: new Date(),
-      createdBy: 'admin',
-      comments: tmpComment,
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      postRelateds: resumesPost,
-    };
-
-    return of(postDetail);
+    return this.http.get<PostDetail>(
+      this.configService.buildApiUrl('api/post/' + id)
+    );
   }
 
   addComment(comment: Comment): Observable<void> {
@@ -95,11 +29,25 @@ export class PostService {
     return of();
   }
 
-  publishPost(addPost: AddPost): Observable<string> {
-    return of('aaaa');
+  addPost(addPost: AddPost): Observable<string> {
+    return this.http.post<string>(
+      this.configService.buildApiUrl('api/post'),
+      addPost,
+      { responseType: 'text' as 'json' }
+    );
   }
 
-  saveDraftPost(addPost: AddPost): Observable<string> {
-    return of('aaaa');
+  updatePost(addPost: AddPost): Observable<string> {
+    return this.http.post<string>(
+      this.configService.buildApiUrl('api/postupdate'),
+      addPost,
+      { responseType: 'text' as 'json' }
+    );
+  }
+
+  getUpdatePost(id: string): Observable<UpdatePost> {
+    return this.http.get<UpdatePost>(
+      this.configService.buildApiUrl('api/postupdate/' + id)
+    );
   }
 }

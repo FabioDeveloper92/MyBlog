@@ -1,14 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  filter,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { PostService } from '../../../core/services/post.service';
 import { TagsService } from '../../../core/services/tags.service';
+import { PublicState } from '../../../public/public.state';
+import { GO } from '../../../router.actions';
 import { ofRoute } from '../../../router.operator';
+import { selectRouterStateSnapshot } from '../../../router.selectors';
 import {
+  GetPostAction,
+  GetPostCompleteAction,
+  GetPostErrorAction,
   GetTagsBlogAction,
   GetTagsBlogCompleteAction,
   GetTagsBlogErrorAction,
+  GET_POST,
+  GET_POST_ERROR,
   GET_TAGS_BLOG,
   GET_TAGS_BLOG_ERROR,
   PublishBlogAction,
@@ -20,15 +37,23 @@ import {
   SaveDraftBlogCompleteAction,
   SaveDraftBlogErrorAction,
   SAVE_DRAFT_BLOG,
-  SAVE_DRAFT_BLOG_ERROR
-} from './add-post.actions';
+  SAVE_DRAFT_BLOG_ERROR,
+} from './update-post.actions';
 
 @Injectable()
-export class AddPostEffects {
+export class UpdatePostEffects {
   @Effect()
   mapRouteToGet$ = this.action$.pipe(
-    ofRoute('newpost'),
-    map((_) => new GetTagsBlogAction())
+    ofRoute('updatepost'),
+    withLatestFrom(
+      this.store.select(selectRouterStateSnapshot),
+      (_, router) => router
+    ),
+    filter((router) => !!router.params['id']),
+    concatMap((router) => [
+      new GetTagsBlogAction(),
+      new GetPostAction(router.params['id']),
+    ])
   );
 
   @Effect()
@@ -38,6 +63,17 @@ export class AddPostEffects {
       this.tagsService.list().pipe(
         map((item) => new GetTagsBlogCompleteAction(item)),
         catchError((error) => of(new GetTagsBlogErrorAction(error)))
+      )
+    )
+  );
+
+  @Effect()
+  getPost$ = this.action$.pipe(
+    ofType<GetPostAction>(GET_POST),
+    switchMap((action) =>
+      this.postService.getUpdatePost(action.payload).pipe(
+        map((item) => new GetPostCompleteAction(item)),
+        catchError((error) => of(new GetPostErrorAction(error)))
       )
     )
   );
@@ -58,7 +94,7 @@ export class AddPostEffects {
     ofType<SaveDraftBlogAction>(SAVE_DRAFT_BLOG),
     switchMap((action) =>
       this.postService.addPost(action.payload).pipe(
-        map((item) => new SaveDraftBlogCompleteAction(item)),
+        map((item) => new SaveDraftBlogCompleteAction()),
         catchError((error) => of(new SaveDraftBlogErrorAction(error)))
       )
     )
@@ -67,8 +103,16 @@ export class AddPostEffects {
   @Effect({ dispatch: false })
   notifyError = this.action$.pipe(
     ofType<
-      GetTagsBlogErrorAction | SaveDraftBlogErrorAction | PublishBlogErrorAction
-    >(GET_TAGS_BLOG_ERROR, SAVE_DRAFT_BLOG_ERROR, PUBLISH_BLOG_ERROR),
+      | GetTagsBlogErrorAction
+      | SaveDraftBlogErrorAction
+      | PublishBlogErrorAction
+      | GetPostErrorAction
+    >(
+      GET_TAGS_BLOG_ERROR,
+      SAVE_DRAFT_BLOG_ERROR,
+      PUBLISH_BLOG_ERROR,
+      GET_POST_ERROR
+    ),
     tap((action) => {
       console.log(action.payload);
     })
@@ -76,6 +120,7 @@ export class AddPostEffects {
 
   constructor(
     private action$: Actions,
+    private store: Store<PublicState>,
     private tagsService: TagsService,
     private postService: PostService
   ) {}

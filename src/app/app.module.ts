@@ -24,8 +24,9 @@ import { NotFoundComponent } from './containers/not-found/not-found.component';
 import { CoreModule } from './core/core.module';
 import { CustomRouterStateSerializer } from './custom-router.state-serializer';
 import { ConfigGuard } from './guards/config.guards';
+import { AuthGuard } from './guards/auth.guards';
 import { HttpLoaderFactory } from './http-loader-factory';
-import { PubblicModule } from './pubblic/pubblic.module';
+import { PublicModule } from './public/public.module';
 import { RouterEffects } from './router.effects';
 import { ConfigService } from './services/config.service';
 import { UserModule } from './user/user.module';
@@ -37,7 +38,7 @@ import { UserModule } from './user/user.module';
     HttpClientModule,
     AppRoutingModule,
 
-    PubblicModule,
+    PublicModule,
     AuthenticationModule,
     UserModule,
 
@@ -67,12 +68,13 @@ import { UserModule } from './user/user.module';
 
     ConfigService,
     ConfigGuard,
+    AuthGuard,
 
     {
       provide: RouterStateSerializer,
       useClass: CustomRouterStateSerializer,
     },
-    
+
     {
       provide: APP_INITIALIZER,
       useFactory: (store: Store<AppState>) => {

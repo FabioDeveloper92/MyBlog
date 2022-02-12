@@ -13,7 +13,7 @@ import {
 import { PostService } from '../../../core/services/post.service';
 import { ofRoute } from '../../../router.operator';
 import { selectRouterStateSnapshot } from '../../../router.selectors';
-import { PubblicState } from '../../pubblic.state';
+import { PublicState } from '../../public.state';
 import { selectPostDetailId } from '../post-read/post-read.selectors';
 import {
   AddCommentPostAction,
@@ -87,7 +87,7 @@ export class PostReadEffects {
 
   constructor(
     private action$: Actions,
-    private store: Store<PubblicState>,
+    private store: Store<PublicState>,
     private postService: PostService
   ) {}
 }

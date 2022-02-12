@@ -3,9 +3,9 @@ import { BlogReducers } from './container/blog/blog.reducers';
 import { HomeReducers } from './container/home/home.reducers';
 import { PostReadReducers } from './container/post-read/post-read.reducers';
 
-import { PubblicState } from './pubblic.state';
+import { PublicState } from './public.state';
 
-export const PubblicReducers: ActionReducerMap<PubblicState> = {
+export const PublicReducers: ActionReducerMap<PublicState> = {
     homeState: HomeReducers,
     postReadState: PostReadReducers,
     blogState: BlogReducers
