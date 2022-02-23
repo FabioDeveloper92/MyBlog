@@ -56,7 +56,7 @@ export class ConfigEffects {
     ofType<GetConfigCompleteAction>(GET_CONFIG_COMPLETE),
     tap(() => this.lockerService.Unlock()),
     mergeMap(() => [
-      new GetUserInfoAction(this.cookieService.get('STKN')),
+      new GetUserInfoAction(),
       new SetupLanguageAction()
     ])
   );

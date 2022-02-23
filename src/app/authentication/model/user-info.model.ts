@@ -3,6 +3,4 @@ export class UserInfo {
   name: string;
   surname: string;
   email: string;
-  internalToken: string;
-  expiredToken: Date;
 }

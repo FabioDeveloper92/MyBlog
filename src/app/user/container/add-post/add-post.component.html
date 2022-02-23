@@ -3,6 +3,7 @@
     [isBusyPublish]="isBusyPublish$ | async"
     [isBusySaveDraft]="isBusySaveDraft$ | async"
     [tagsBlog]="tagsBlog$ | async"
+    [draftPost]="null"
     (publish)="onPublish($event)"
     (savedraft)="onSaveDraft($event)"
   ></app-new-post>

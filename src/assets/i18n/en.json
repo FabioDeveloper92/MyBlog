@@ -80,5 +80,22 @@
     "PUBLISH": "Publish",
     "SAVEDRAFT": "Save Draft",
     "SELECTTAGS": "Select Tags (Max 4)"
+  },
+  "VOICEMENU": {
+    "YOURPOST": "Your post",
+    "DASHBOARD": "Dashboard"
+  },
+  "USERAREA": {
+    "CREATEPOST": "Create post"
+  },
+  "MYPOSTLIST": {
+    "ALLSTATE": "All State",
+    "MYPOSTLIST": "Published",
+    "DRAFT": "Draft",
+    "PUBLISHED": "Published",
+    "RECENTLYCREATED": "Recently Created",
+    "RECENTLYPUBLISHED": "Recently Published",
+    "NOPOST": "No Post",
+    "FILTERBYTITLE": "Fiter By Title"
   }
 }

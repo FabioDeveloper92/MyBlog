@@ -1,0 +1,10 @@
+<nav class="menu">
+  <p class="menu-label">General</p>
+  <ul class="menu-list">
+    <li *ngFor="let voiceMenu of voicesMenu">
+      <a [class.is-active]="selectVoiceMenu == voiceMenu.id">{{
+        voiceMenu.text | translate
+      }}</a>
+    </li>
+  </ul>
+</nav>

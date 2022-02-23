@@ -1,1 +1,13 @@
-<a class="navbar-item" [routerLink]="['/newpost']">Create New Post TODO</a>
+<div class="section">
+  <div class="columns">
+    <div class="column is-2">
+      <app-lateral-menu
+        [voicesMenu]="voicesMenu$ | async"
+        [selectVoiceMenu]="selectVoiceMenu$ | async"
+      ></app-lateral-menu>
+    </div>
+    <div class="column is-10">
+      <app-my-post-list></app-my-post-list>
+    </div>
+  </div>
+</div>

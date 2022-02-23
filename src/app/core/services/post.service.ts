@@ -31,14 +31,14 @@ export class PostService {
 
   addPost(addPost: AddPost): Observable<string> {
     return this.http.post<string>(
-      this.configService.buildApiUrl('api/post'),
+      this.configService.buildApiUrl('api/postcreate'),
       addPost,
       { responseType: 'text' as 'json' }
     );
   }
 
-  updatePost(addPost: AddPost): Observable<string> {
-    return this.http.post<string>(
+  updatePost(addPost: UpdatePost): Observable<string> {
+    return this.http.put<string>(
       this.configService.buildApiUrl('api/postupdate'),
       addPost,
       { responseType: 'text' as 'json' }
@@ -49,5 +49,15 @@ export class PostService {
     return this.http.get<UpdatePost>(
       this.configService.buildApiUrl('api/postupdate/' + id)
     );
+  }
+
+  getPosts(id: string): Observable<UpdatePost[]> {
+    return this.http.post<any>(
+      this.configService.buildApiUrl('api/mypost'),
+      {},
+      { responseType: 'text' as 'json' }
+    );
+
+    return of([])
   }
 }

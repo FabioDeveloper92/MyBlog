@@ -1,12 +1,6 @@
 import { createSelector } from '@ngrx/store';
-import { UserState } from '../../user.state';
+import { selectAddPostState } from '../../user.selector';
 import { AddPostState } from './add-post.state';
-import { getUserState } from '../../user.selector';
-
-export const selectAddPostState = createSelector(
-  getUserState,
-  (state: UserState) => state.addPost
-);
 
 export const selectIsBusyPublish = createSelector(
   selectAddPostState,

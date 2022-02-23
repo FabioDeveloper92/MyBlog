@@ -1,10 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
+import { AppState } from '../app.state';
 import { GoAction } from '../router.actions';
 import { ofRoute } from '../router.operator';
+import { selectRouterStateSnapshot } from '../router.selectors';
 import {
   GetUserInfoAction,
   GetUserInfoCompleteAction,
@@ -21,6 +30,7 @@ import {
   LOGIN_JWT_ERROR,
   LOGOUT,
   LogoutAction,
+  NoAction,
   ShowLoginTabAction,
   SIGNUP,
   SignupAction,
@@ -36,14 +46,19 @@ export class AuthEffects {
   @Effect()
   mapRouteToGet$ = this.actions$.pipe(
     ofRoute('login'),
-    map(() => new ShowLoginTabAction())
+    map(() => {
+      var oldToken = this.cookieService.get('token');
+      if (oldToken) return new GoAction({ path: ['profile'] });
+
+      return new ShowLoginTabAction();
+    })
   );
 
   @Effect()
   getUserInfo$ = this.actions$.pipe(
     ofType<GetUserInfoAction>(GET_USERINFO),
     switchMap((action) =>
-      this.authenticationService.getUserInfo(action.payload).pipe(
+      this.authenticationService.getUserInfo().pipe(
         map((userInfo) => new GetUserInfoCompleteAction(userInfo)),
         catchError((error) => of(new GetUserInfoErrorAction(error)))
       )
@@ -53,13 +68,15 @@ export class AuthEffects {
   @Effect()
   getUserInfoComplete$ = this.actions$.pipe(
     ofType<GetUserInfoCompleteAction>(GET_USERINFO_COMPLETE),
-    map((action) => {
-      var existToken = this.cookieService.get('STKN') !== undefined;
+    withLatestFrom(
+      this.store.select(selectRouterStateSnapshot),
+      (_, router) => router
+    ),
+    map((router) => {
+      if (router.url.includes('login'))
+        return new GoAction({ path: ['profile'] });
 
-      if (action?.payload)
-        this.cookieService.set('STKN', action.payload.internalToken);
-
-      if (!existToken) return new GoAction({ path: ['profile'] });
+      return new NoAction();
     })
   );
 
@@ -74,7 +91,10 @@ export class AuthEffects {
     ofType<LoggedInGoogleAction>(LOGIN_JWT),
     switchMap((action) =>
       this.authenticationService.saveUserInfoFromGoogle(action.payload).pipe(
-        map((payload) => new GetUserInfoAction(payload)),
+        map((payload) => {
+          this.cookieService.set('token', payload);
+          return new GetUserInfoAction();
+        }),
         catchError((error) => of(new LoginJwtErrorAction(error)))
       )
     )
@@ -85,18 +105,21 @@ export class AuthEffects {
     ofType<LoggedInGoogleAction>(LOGGED_IN_GOOGLE),
     switchMap((action) =>
       this.authenticationService.saveUserInfoFromGoogle(action.payload).pipe(
-        map((token) => new GetUserInfoAction(token)),
+        map((token) => {
+          this.cookieService.set('token', token);
+          return new GetUserInfoAction();
+        }),
         catchError((error) => of(new LoggedInGoogleErrorAction(error)))
       )
     )
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   logout$ = this.actions$.pipe(
     ofType<LogoutAction>(LOGOUT),
-    tap((_) => {
-      this.authenticationService.logout(this.cookieService.get('STKN'));
-      this.cookieService.delete('STKN');
+    map((_) => {
+      this.cookieService.delete('token');
+      return new GoAction({ path: [''] });
     })
   );
 
@@ -114,7 +137,7 @@ export class AuthEffects {
   @Effect()
   signupComplete$ = this.actions$.pipe(
     ofType<SignupCompleteAction>(SIGNUP_COMPLETE),
-    map((action) => new GetUserInfoAction(action.payload))
+    map((action) => new GetUserInfoAction())
   );
 
   @Effect({ dispatch: false })
@@ -128,6 +151,7 @@ export class AuthEffects {
   );
 
   constructor(
+    private store: Store<AppState>,
     private actions$: Actions,
     private authenticationService: AuthenticationService,
     private cookieService: CookieService

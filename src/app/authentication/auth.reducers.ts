@@ -8,6 +8,7 @@ import {
   LOGIN_JWT,
   LOGIN_JWT_ERROR,
   LOGOUT,
+  NO_ACTION,
   SHOW_LOGIN_TAB,
   SHOW_SIGNUP_TAB,
   SIGNUP,
@@ -97,6 +98,8 @@ export function AuthReducers(
         ...state,
         showLoginTab: false,
       };
+    case NO_ACTION:
+      return state;
     default:
       return state;
   }

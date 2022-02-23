@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { TagModel } from '../../../core/model/tag.model';
 import { AddPost } from '../../models/add-post.model';
+import { PublishBlogAction, SaveDraftBlogAction } from './add-post.actions';
 import {
   selectIsBusyPublish,
   selectIsBusySaveDraft,
   selectTagsBlog,
 } from './add-post.selector';
 import { AddPostState } from './add-post.state';
-import { PublishBlogAction, SaveDraftBlogAction } from './add-post.actions';
 
 @Component({
   selector: 'app-add-post',

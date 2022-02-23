@@ -1,7 +1,8 @@
 export class AddPost {
-  Title: string;
-  ImageThumb: string;
-  ImageMain: string;
-  Text: string;
-  Tags: number[];
+  title: string;
+  imageThumb: string;
+  imageMain: string;
+  text: string;
+  tags: number[];
+  toPublished: boolean;
 }

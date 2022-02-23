@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { ErrorPayload } from '../../../core/model/error-payload.model';
 import { TagModel } from '../../../core/model/tag.model';
+import { AddPost } from '../../models/add-post.model';
 import { UpdatePost } from '../../models/update-post.model';
 
 export const GET_TAGS_BLOG = '[UpdatePost] Get Tags Blog';
@@ -51,7 +52,7 @@ export class GetPostErrorAction implements Action {
 
 export class PublishBlogAction implements Action {
   readonly type = PUBLISH_BLOG;
-  constructor(public payload: UpdatePost) {}
+  constructor(public payload: AddPost) {}
 }
 
 export class PublishBlogCompleteAction implements Action {
@@ -66,7 +67,7 @@ export class PublishBlogErrorAction implements Action {
 
 export class SaveDraftBlogAction implements Action {
   readonly type = SAVE_DRAFT_BLOG;
-  constructor(public payload: UpdatePost) {}
+  constructor(public payload: AddPost) {}
 }
 
 export class SaveDraftBlogCompleteAction implements Action {

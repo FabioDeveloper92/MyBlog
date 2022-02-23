@@ -23,6 +23,8 @@ export const LOGOUT = '[Auth] Logout';
 export const SHOW_LOGIN_TAB = '[Auth] Show Login Tab';
 export const SHOW_SIGNUP_TAB = '[Auth] Show Signup Tab';
 
+export const NO_ACTION = '[Auth] No Action';
+
 export class LoginJwtAction implements Action {
   readonly type = LOGIN_JWT;
 
@@ -50,7 +52,7 @@ export class LoggedInGoogleErrorAction implements Action {
 export class GetUserInfoAction implements Action {
   readonly type = GET_USERINFO;
 
-  constructor(public payload: string) {}
+  constructor() {}
 }
 
 export class GetUserInfoCompleteAction implements Action {
@@ -95,6 +97,10 @@ export class ShowSignupTabAction implements Action {
   readonly type = SHOW_SIGNUP_TAB;
 }
 
+export class NoAction implements Action {
+  readonly type = NO_ACTION;
+}
+
 export type AuthActions =
   | LoggedInGoogleAction
   | LoggedInGoogleErrorAction
@@ -108,4 +114,5 @@ export type AuthActions =
   | LoginJwtErrorAction
   | SignupAction
   | SignupCompleteAction
-  | SignupErrorAction;
+  | SignupErrorAction
+  | NoAction;

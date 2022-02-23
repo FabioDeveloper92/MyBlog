@@ -8,6 +8,7 @@ import {
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import * as Uri from 'urijs';
@@ -25,7 +26,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
   isAuthenticated: boolean;
   userInfo: UserInfo;
 
-  constructor(private store: Store<AuthState>, private injector: Injector) {
+  constructor(private store: Store<AuthState>, private injector: Injector, private cookieService: CookieService) {
     this.store
       .select(selectIsAuthenticated)
       .subscribe((x) => (this.isAuthenticated = x));
@@ -38,34 +39,16 @@ export class AppHttpInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const translateService = this.injector.get(TranslateService);
 
-    const path = new Uri(request.url).path();
-
-    const canBeAuthenticate = path.indexOf('api/config') === -1;
-    const getI18n = path.indexOf('assets/i18n') === -1;
-
-    // if (!canBeAuthenticate && !getI18n) {
-    //   if (!request.headers.has('NO-AUTHORIZATION')) {
-    //     if (!this.isAuthenticated) {
-    //       return throwError('Unauthorized');
-    //     }
-
-    //     request = request.clone({
-    //       setHeaders: {
-    //         Authorization: `Bearer ${this.userInfo.internalToken}`,
-    //       },
-    //     });
-    //   }
-    // }
-
     request = request.clone({
       setHeaders: {
         'Cache-Control': `no-cache`,
         Pragma: `no-cache`,
         Expires: `Sat, 01 Jan 2000 00:00:00 GMT`,
         'If-Modified-Since': `0`,
+        Authorization: `Bearer ${this.cookieService.get('token')}`
       },
     });
-
+    
     return next.handle(request).pipe(
       catchError((toParseError: HttpErrorResponse) => {
         return new Promise<any>((resolve, reject) => {

@@ -1,9 +1,9 @@
 export class UpdatePost{
-    Title: string;
-    ImageThumb: string;
-    ImageMain: string;
-    Text: string;
-    Tags: number[];
+    title: string;
+    imageThumb: string;
+    imageMain: string;
+    text: string;
+    tags: number[];
     CreateBy: string;
     CreateDate: Date;
     UpdateDate: Date;

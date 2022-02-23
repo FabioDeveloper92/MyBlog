@@ -1,20 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { AddUserInfo } from '../model/add-user-info.model';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ConfigService } from '../../services/config.service';
+import { AddUserInfo } from '../model/add-user-info.model';
 import { UserInfo } from '../model/user-info.model';
 
 @Injectable()
 export class AuthenticationService {
   constructor(private http: HttpClient, private configService: ConfigService) {}
 
-  getUserInfo(token: string): Observable<UserInfo> {
-    if (!token) return of(null);
-
-    return this.http.get<UserInfo>(
-      this.configService.buildApiUrl(`api/user/${token}`)
-    );
+  getUserInfo(): Observable<UserInfo> {
+    return this.http.get<UserInfo>(this.configService.buildApiUrl(`api/user`));
   }
 
   saveUserInfo(userInfo: AddUserInfo): Observable<string> {
@@ -41,7 +37,7 @@ export class AuthenticationService {
     );
   }
 
-  logout(token: string): Observable<void> {
+  logout(): Observable<void> {
     return this.http.delete<void>(this.configService.buildApiUrl('api/user'));
   }
 }

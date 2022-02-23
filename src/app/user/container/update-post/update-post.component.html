@@ -1,1 +1,10 @@
-<p>update-post works!</p>
+<div class="container">
+    <app-new-post
+      [isBusyPublish]="isBusyPublish$ | async"
+      [isBusySaveDraft]="isBusySaveDraft$ | async"
+      [tagsBlog]="tagsBlog$ | async"
+      [draftPost]="post$ | async"
+      (publish)="onPublish($event)"
+      (savedraft)="onSaveDraft($event)"
+    ></app-new-post>
+  </div>
