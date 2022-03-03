@@ -1,4 +1,4 @@
-<div class="section">
+<div class="section" [locker]="isBusyGetPosts$ | async">
   <div class="columns">
     <div class="column is-2">
       <app-lateral-menu
@@ -7,7 +7,16 @@
       ></app-lateral-menu>
     </div>
     <div class="column is-10">
-      <app-my-post-list></app-my-post-list>
+      <app-my-post-list
+        [myPosts]="myPosts$ | async"
+        [showPostNumber]="showPostNumber$ | async"
+        (edit)="onEdit($event)"
+        (changeOrderBy)="onChangeOrderBy($event)"
+        (changeFilterState)="onChangeFilterState($event)"
+        (changeTitleContains)="onChangeTitleContains($event)"
+        (showMore)="onShowMore($event)"
+        (showLess)="onShowLess($event)"
+      ></app-my-post-list>
     </div>
   </div>
 </div>

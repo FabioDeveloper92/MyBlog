@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" [locker]="(isBusyPublish$ | async) || (isBusySaveDraft$ | async)">
     <app-new-post
       [isBusyPublish]="isBusyPublish$ | async"
       [isBusySaveDraft]="isBusySaveDraft$ | async"

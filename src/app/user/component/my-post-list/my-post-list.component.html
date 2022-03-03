@@ -7,39 +7,60 @@
 </div>
 <div class="columns">
   <div class="column is-4">
-    <input type="text" class="input is-primary" placeholder="{{'MYPOSTLIST.FILTERBYTITLE' | translate}}" />
+    <input
+      type="text"
+      class="input is-primary"
+      placeholder="{{ 'MYPOSTLIST.FILTERBYTITLE' | translate }}"
+      (keyup)="onChangeTitleContains($event.target.value)"
+    />
   </div>
   <div class="column is-2">
     <div class="select is-primary">
-      <select>
-        <option>{{
-            "MYPOSTLIST.ALLSTATE" | translate
-          }}</option>
-        <option>{{
-            "MYPOSTLIST.PUBLISHED" | translate
-          }}</option>
-        <option>{{
-            "MYPOSTLIST.DRAFT" | translate
-          }}</option>
+      <select (change)="onChangeFilterState($event.target.value)">
+        <option *ngFor="let item of fltStates" [value]="item.id">
+          {{ item.text | translate }}
+        </option>
       </select>
     </div>
   </div>
   <div class="column is-3">
     <div class="select is-primary">
-      <select>
-        <option>{{
-            "MYPOSTLIST.RECENTLYCREATED" | translate
-          }}</option>
-        <option>{{
-            "MYPOSTLIST.RECENTLYPUBLISHED" | translate
-          }}</option>
+      <select (change)="onChangeOrderBy($event.target.value)">
+        <option *ngFor="let item of orderByItems" [value]="item.id">
+          {{ item.text | translate }}
+        </option>
       </select>
     </div>
   </div>
 </div>
 <div class="columns">
-  <div class="column">{{
-    "MYPOSTLIST.NOPOST" | translate
-  }}</div>
-  <div class="column">Lista dei post</div>
+  <div class="column" *ngIf="myPosts.length == 0">
+    {{ "MYPOSTLIST.NOPOST" | translate }}
+  </div>
+  <div class="column" *ngIf="myPosts.length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{{ "MYPOSTLIST.TITLE" | translate }}</th>
+          <th>{{ "MYPOSTLIST.CREATEDATE" | translate }}</th>
+          <th>{{ "MYPOSTLIST.PUBLISHDATE" | translate }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let post of myPosts">
+          <th>{{ post.title }}</th>
+          <th>{{ post.createDate | date: "dd MMMM yyyy" }}</th>
+          <th>{{ post.publishDate | date: "dd MMMM yyyy" }}</th>
+          <th>
+            <a (click)="onEdit(post.id)">{{ "MYPOSTLIST.EDIT" | translate }}</a>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+    <div class="has-text-centered">
+      <a (click)="onShowMore()" *ngIf="showPostNumber <= myPosts.length"><i class="fas fa-chevron-down"></i> {{ "MYPOSTLIST.SHOWMORE" | translate }}</a>
+      <a (click)="onShowLess()" *ngIf="showPostNumber > myPosts.length"><i class="fas fa-chevron-up"></i> {{ "MYPOSTLIST.SHOWLESS" | translate }}</a>
+    </div>
+  </div>
 </div>

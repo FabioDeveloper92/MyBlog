@@ -6,6 +6,8 @@ import { PostDetail } from '../../public/models/post-detail.model';
 import { ResumePost } from '../../public/models/resume-post.model';
 import { ConfigService } from '../../services/config.service';
 import { AddPost } from '../../user/models/add-post.model';
+import { MyPostFilter } from '../../user/models/my-post-filter.model';
+import { MyPost } from '../../user/models/my-post.model';
 import { UpdatePost } from '../../user/models/update-post.model';
 
 @Injectable()
@@ -51,13 +53,10 @@ export class PostService {
     );
   }
 
-  getPosts(id: string): Observable<UpdatePost[]> {
-    return this.http.post<any>(
+  getPosts(filterMyPost: MyPostFilter): Observable<MyPost[]> {
+    return this.http.post<MyPost[]>(
       this.configService.buildApiUrl('api/mypost'),
-      {},
-      { responseType: 'text' as 'json' }
+      filterMyPost
     );
-
-    return of([])
   }
 }

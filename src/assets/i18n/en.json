@@ -96,6 +96,12 @@
     "RECENTLYCREATED": "Recently Created",
     "RECENTLYPUBLISHED": "Recently Published",
     "NOPOST": "No Post",
-    "FILTERBYTITLE": "Fiter By Title"
+    "FILTERBYTITLE": "Fiter By Title",
+    "TITLE": "Title",
+    "CREATEDATE": "Create Date",
+    "PUBLISHDATE": "Publish Date",
+    "EDIT": "Edit",
+    "SHOWLESS": "Show Less",
+    "SHOWMORE": "Show More"
   }
 }
