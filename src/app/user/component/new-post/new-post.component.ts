@@ -8,6 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -17,6 +18,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { TranslateService } from '@ngx-translate/core';
 import { TagModel } from '../../../core/model/tag.model';
 import { AddPost } from '../../models/add-post.model';
+import { MyPostCanBeRelated } from '../../models/my-post-can-be-related';
 import { UpdatePost } from '../../models/update-post.model';
 
 @Component({
@@ -29,6 +31,7 @@ export class NewPostComponent implements OnInit, OnChanges {
   @Input() isBusySaveDraft: boolean;
   @Input() draftPost: UpdatePost;
   @Input() tagsBlog: TagModel[];
+  @Input() selectPostsCanBeRelated: MyPostCanBeRelated[];
 
   @Output() publish = new EventEmitter<AddPost>();
   @Output() savedraft = new EventEmitter<AddPost>();
@@ -61,6 +64,7 @@ export class NewPostComponent implements OnInit, OnChanges {
   ctrlImageMain: FormControl;
   ctrlImageThumb: FormControl;
   ctrlTags: FormControl;
+  ctrlPostsRelated: FormArray;
 
   constructor(
     private fb: FormBuilder,
@@ -84,6 +88,18 @@ export class NewPostComponent implements OnInit, OnChanges {
     this.ctrlImageMain = new FormControl('', [Validators.required]);
     this.ctrlImageThumb = new FormControl('', [Validators.required]);
     this.ctrlTags = new FormControl(null, [Validators.required]);
+    this.ctrlPostsRelated = new FormArray([]);
+
+    if (
+      this.selectPostsCanBeRelated &&
+      this.selectPostsCanBeRelated.length > 0
+    ) {
+      for (let pr of this.selectPostsCanBeRelated) {
+        var isSelected =
+          this.draftPost && this.draftPost.postRelated.includes(pr.id);
+        this.ctrlPostsRelated.push(new FormControl(isSelected));
+      }
+    }
 
     this.addPostForm = this.fb.group({
       text: this.ctrlText,
@@ -91,6 +107,7 @@ export class NewPostComponent implements OnInit, OnChanges {
       imageMain: this.ctrlImageMain,
       imageThumb: this.ctrlImageThumb,
       tags: this.ctrlTags,
+      postsRelated: this.ctrlPostsRelated,
     });
 
     this.addPostForm.markAsUntouched();
@@ -129,6 +146,14 @@ export class NewPostComponent implements OnInit, OnChanges {
   private ConvertFormToAddPost(): AddPost {
     let addPost = new AddPost();
     addPost = { ...addPost, ...this.addPostForm.value };
+
+    let selectedPostRelatedIds = [];
+    for (let i = 0; i < this.addPostForm.value.postsRelated.length; i++) {
+      if (this.addPostForm.value.postsRelated[i]) {
+        selectedPostRelatedIds.push(this.selectPostsCanBeRelated[i].id);
+      }
+    }
+    addPost.postsRelated = selectedPostRelatedIds;
     return addPost;
   }
 
@@ -140,5 +165,18 @@ export class NewPostComponent implements OnInit, OnChanges {
       imageThumb: post.imageThumb,
       tags: post.tags,
     });
+
+    if (
+      this.selectPostsCanBeRelated &&
+      this.selectPostsCanBeRelated.length > 0
+    ) {
+      for (let pr of this.selectPostsCanBeRelated) {
+        var isSelected =
+          this.draftPost && this.draftPost.postsRelated.includes(pr.id);
+        this.ctrlPostsRelated.push(new FormControl(isSelected));
+      }
+    }
+
+    this.addPostForm.setControl('postsRelated', this.ctrlPostsRelated);
   }
 }

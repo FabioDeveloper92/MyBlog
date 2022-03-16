@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { ErrorPayload } from '../../../core/model/error-payload.model';
 import { TagModel } from '../../../core/model/tag.model';
 import { AddPost } from '../../models/add-post.model';
+import { MyPostCanBeRelated } from '../../models/my-post-can-be-related';
 import { UpdatePost } from '../../models/update-post.model';
 
 export const GET_TAGS_BLOG = '[UpdatePost] Get Tags Blog';
@@ -19,6 +20,13 @@ export const PUBLISH_BLOG_ERROR = '[UpdatePost] Get Publish Blog Error';
 export const SAVE_DRAFT_BLOG = '[UpdatePost] Save Draft Blog';
 export const SAVE_DRAFT_BLOG_COMPLETE = '[UpdatePost] Save Draft Blog Complete';
 export const SAVE_DRAFT_BLOG_ERROR = '[UpdatePost] Save Draft Blog Error';
+
+export const GET_MY_POSTS_CAN_BE_RELATED =
+  '[UpdatePost] Get My Post Can Be Related';
+export const GET_MY_POSTS_CAN_BE_RELATED_COMPLETE =
+  '[UpdatePost] Get My Post Can Be Related Complete';
+export const GET_MY_POSTS_CAN_BE_RELATED_ERROR =
+  '[UpdatePost] Get My Post Can Be Related Error';
 
 export class GetTagsBlogAction implements Action {
   readonly type = GET_TAGS_BLOG;
@@ -80,6 +88,21 @@ export class SaveDraftBlogErrorAction implements Action {
   constructor(public payload: ErrorPayload) {}
 }
 
+export class GetMyPostsCanBeRelatedAction implements Action {
+  readonly type = GET_MY_POSTS_CAN_BE_RELATED;
+  constructor() {}
+}
+
+export class GetMyPostsCanBeRelatedCompleteAction implements Action {
+  readonly type = GET_MY_POSTS_CAN_BE_RELATED_COMPLETE;
+  constructor(public payload: MyPostCanBeRelated[]) {}
+}
+
+export class GetMyPostsCanBeRelatedErrorAction implements Action {
+  readonly type = GET_MY_POSTS_CAN_BE_RELATED_ERROR;
+  constructor(public payload: ErrorPayload) {}
+}
+
 export type UpdatePostActions =
   | GetTagsBlogAction
   | GetTagsBlogCompleteAction
@@ -92,4 +115,7 @@ export type UpdatePostActions =
   | PublishBlogErrorAction
   | SaveDraftBlogAction
   | SaveDraftBlogCompleteAction
-  | SaveDraftBlogErrorAction;
+  | SaveDraftBlogErrorAction
+  | GetMyPostsCanBeRelatedAction
+  | GetMyPostsCanBeRelatedCompleteAction
+  | GetMyPostsCanBeRelatedErrorAction;

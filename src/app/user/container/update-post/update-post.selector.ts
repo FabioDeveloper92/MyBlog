@@ -21,3 +21,8 @@ export const selectTagsBlog = createSelector(
   selectUpdatePostState,
   (state: UpdatePostState) => state.tagsBlog
 );
+
+export const selectPostsCanBeRelated = createSelector(
+  selectUpdatePostState,
+  (state: UpdatePostState) => state.postCanBeRelated
+);

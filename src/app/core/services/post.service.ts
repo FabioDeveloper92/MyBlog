@@ -6,6 +6,7 @@ import { PostDetail } from '../../public/models/post-detail.model';
 import { ResumePost } from '../../public/models/resume-post.model';
 import { ConfigService } from '../../services/config.service';
 import { AddPost } from '../../user/models/add-post.model';
+import { MyPostCanBeRelated } from '../../user/models/my-post-can-be-related';
 import { MyPostFilter } from '../../user/models/my-post-filter.model';
 import { MyPost } from '../../user/models/my-post.model';
 import { UpdatePost } from '../../user/models/update-post.model';
@@ -39,9 +40,9 @@ export class PostService {
     );
   }
 
-  updatePost(addPost: UpdatePost): Observable<string> {
+  updatePost(id: string, addPost: AddPost): Observable<string> {
     return this.http.put<string>(
-      this.configService.buildApiUrl('api/postupdate'),
+      this.configService.buildApiUrl('api/postupdate/' + id),
       addPost,
       { responseType: 'text' as 'json' }
     );
@@ -50,6 +51,12 @@ export class PostService {
   getUpdatePost(id: string): Observable<UpdatePost> {
     return this.http.get<UpdatePost>(
       this.configService.buildApiUrl('api/postupdate/' + id)
+    );
+  }
+
+  getMyPostCanBeRelated(): Observable<MyPostCanBeRelated[]> {
+    return this.http.get<MyPostCanBeRelated[]>(
+      this.configService.buildApiUrl('api/postrelated/')
     );
   }
 

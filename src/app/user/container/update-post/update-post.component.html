@@ -4,6 +4,7 @@
       [isBusySaveDraft]="isBusySaveDraft$ | async"
       [tagsBlog]="tagsBlog$ | async"
       [draftPost]="post$ | async"
+      [selectPostsCanBeRelated]="selectPostsCanBeRelated$ | async"
       (publish)="onPublish($event)"
       (savedraft)="onSaveDraft($event)"
     ></app-new-post>

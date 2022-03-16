@@ -3,11 +3,13 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { TagModel } from '../../../core/model/tag.model';
 import { AddPost } from '../../models/add-post.model';
+import { MyPostCanBeRelated as MyPostCanBeRelated } from '../../models/my-post-can-be-related';
 import { UpdatePost } from '../../models/update-post.model';
 import { PublishBlogAction, SaveDraftBlogAction } from './update-post.actions';
 import {
   selectIsBusyPublish,
   selectIsBusySaveDraft,
+  selectPostsCanBeRelated,
   selectTagsBlog,
   selectUpdatePost,
 } from './update-post.selector';
@@ -22,12 +24,14 @@ export class UpdatePostContainerComponent {
   isBusyPublish$: Observable<boolean>;
   isBusySaveDraft$: Observable<boolean>;
   post$: Observable<UpdatePost>;
+  selectPostsCanBeRelated$: Observable<MyPostCanBeRelated[]>;
 
   constructor(private store: Store<UpdatePostState>) {
     this.post$ = store.select(selectUpdatePost);
     this.isBusyPublish$ = store.select(selectIsBusyPublish);
     this.isBusySaveDraft$ = store.select(selectIsBusySaveDraft);
     this.tagsBlog$ = store.select(selectTagsBlog);
+    this.selectPostsCanBeRelated$ = store.select(selectPostsCanBeRelated);
   }
 
   onPublish(event: AddPost) {

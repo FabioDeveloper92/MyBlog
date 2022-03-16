@@ -5,4 +5,5 @@ export class AddPost {
   text: string;
   tags: number[];
   toPublished: boolean;
+  postsRelated: string[];
 }

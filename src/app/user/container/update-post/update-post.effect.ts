@@ -18,12 +18,17 @@ import { GoAction } from '../../../router.actions';
 import { ofRoute } from '../../../router.operator';
 import { selectRouterStateSnapshot } from '../../../router.selectors';
 import {
+  GetMyPostsCanBeRelatedAction,
+  GetMyPostsCanBeRelatedCompleteAction,
+  GetMyPostsCanBeRelatedErrorAction,
   GetPostAction,
   GetPostCompleteAction,
   GetPostErrorAction,
   GetTagsBlogAction,
   GetTagsBlogCompleteAction,
   GetTagsBlogErrorAction,
+  GET_MY_POSTS_CAN_BE_RELATED,
+  GET_MY_POSTS_CAN_BE_RELATED_ERROR,
   GET_POST,
   GET_POST_ERROR,
   GET_TAGS_BLOG,
@@ -51,6 +56,7 @@ export class UpdatePostEffects {
     ),
     filter((router) => !!router.params['id']),
     concatMap((router) => [
+      new GetMyPostsCanBeRelatedAction(),
       new GetTagsBlogAction(),
       new GetPostAction(router.params['id']),
     ])
@@ -63,6 +69,17 @@ export class UpdatePostEffects {
       this.tagsService.list().pipe(
         map((item) => new GetTagsBlogCompleteAction(item)),
         catchError((error) => of(new GetTagsBlogErrorAction(error)))
+      )
+    )
+  );
+
+  @Effect()
+  getMyPostsCanBeRelated$ = this.action$.pipe(
+    ofType<GetMyPostsCanBeRelatedAction>(GET_MY_POSTS_CAN_BE_RELATED),
+    switchMap(() =>
+      this.postService.getMyPostCanBeRelated().pipe(
+        map((item) => new GetMyPostsCanBeRelatedCompleteAction(item)),
+        catchError((error) => of(new GetMyPostsCanBeRelatedErrorAction(error)))
       )
     )
   );
@@ -81,22 +98,34 @@ export class UpdatePostEffects {
   @Effect()
   publishPost$ = this.action$.pipe(
     ofType<PublishBlogAction>(PUBLISH_BLOG),
+    withLatestFrom(
+      this.store.select(selectRouterStateSnapshot),
+      (action, router) => ({ action, router })
+    ),
     switchMap((action) =>
-      this.postService.addPost(action.payload).pipe(
-        map((item) => new PublishBlogCompleteAction(item)),
-        catchError((error) => of(new PublishBlogErrorAction(error)))
-      )
+      this.postService
+        .updatePost(action.router.params['id'], action.action.payload)
+        .pipe(
+          map((item) => new PublishBlogCompleteAction(item)),
+          catchError((error) => of(new PublishBlogErrorAction(error)))
+        )
     )
   );
 
   @Effect()
   saveDraftPost$ = this.action$.pipe(
     ofType<SaveDraftBlogAction>(SAVE_DRAFT_BLOG),
+    withLatestFrom(
+      this.store.select(selectRouterStateSnapshot),
+      (action, router) => ({ action, router })
+    ),
     switchMap((action) =>
-      this.postService.addPost(action.payload).pipe(
-        map((item) => new SaveDraftBlogCompleteAction()),
-        catchError((error) => of(new SaveDraftBlogErrorAction(error)))
-      )
+      this.postService
+        .updatePost(action.router.params['id'], action.action.payload)
+        .pipe(
+          map((item) => new SaveDraftBlogCompleteAction()),
+          catchError((error) => of(new SaveDraftBlogErrorAction(error)))
+        )
     )
   );
 
@@ -107,14 +136,15 @@ export class UpdatePostEffects {
       | SaveDraftBlogErrorAction
       | PublishBlogErrorAction
       | GetPostErrorAction
+      | GetMyPostsCanBeRelatedErrorAction
     >(
       GET_TAGS_BLOG_ERROR,
       SAVE_DRAFT_BLOG_ERROR,
       PUBLISH_BLOG_ERROR,
-      GET_POST_ERROR
+      GET_POST_ERROR,
+      GET_MY_POSTS_CAN_BE_RELATED_ERROR
     ),
     tap((action) => {
-      
       if (action.payload.code === 404) {
         this.store.dispatch(new GoAction({ path: ['not-found'] }));
         return;

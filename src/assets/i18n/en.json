@@ -79,7 +79,8 @@
     "INSERTTHUMBMAIN": "Insert thumb image",
     "PUBLISH": "Publish",
     "SAVEDRAFT": "Save Draft",
-    "SELECTTAGS": "Select Tags (Max 4)"
+    "SELECTTAGS": "Select Tags (Max 4)",
+    "SELECTPOSTRELATED": "Select Post Related"
   },
   "VOICEMENU": {
     "YOURPOST": "Your post",

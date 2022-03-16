@@ -8,4 +8,5 @@ export class UpdatePost{
     CreateDate: Date;
     UpdateDate: Date;
     PublishDate: Date;
+    postsRelated: string[];
 }

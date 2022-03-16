@@ -1,15 +1,18 @@
 import {
-    GET_POST,
-    GET_POST_COMPLETE,
-    GET_POST_ERROR,
-    GET_TAGS_BLOG_COMPLETE,
-    PUBLISH_BLOG,
-    PUBLISH_BLOG_COMPLETE,
-    PUBLISH_BLOG_ERROR,
-    SAVE_DRAFT_BLOG,
-    SAVE_DRAFT_BLOG_COMPLETE,
-    SAVE_DRAFT_BLOG_ERROR,
-    UpdatePostActions
+  GET_MY_POSTS_CAN_BE_RELATED,
+  GET_MY_POSTS_CAN_BE_RELATED_COMPLETE,
+  GET_MY_POSTS_CAN_BE_RELATED_ERROR,
+  GET_POST,
+  GET_POST_COMPLETE,
+  GET_POST_ERROR,
+  GET_TAGS_BLOG_COMPLETE,
+  PUBLISH_BLOG,
+  PUBLISH_BLOG_COMPLETE,
+  PUBLISH_BLOG_ERROR,
+  SAVE_DRAFT_BLOG,
+  SAVE_DRAFT_BLOG_COMPLETE,
+  SAVE_DRAFT_BLOG_ERROR,
+  UpdatePostActions,
 } from './update-post.actions';
 import { UpdatePostState } from './update-post.state';
 
@@ -20,6 +23,7 @@ export function UpdatePostReducers(
     isBusySaveDraft: false,
     isBusyGetPost: false,
     tagsBlog: [],
+    postCanBeRelated: [],
   },
   action: UpdatePostActions
 ): UpdatePostState {
@@ -86,6 +90,27 @@ export function UpdatePostReducers(
         ...state,
         post: undefined,
         isBusyGetPost: false,
+      };
+    }
+
+    case GET_MY_POSTS_CAN_BE_RELATED: {
+      return {
+        ...state,
+        postCanBeRelated: [],
+      };
+    }
+
+    case GET_MY_POSTS_CAN_BE_RELATED_COMPLETE: {
+      return {
+        ...state,
+        postCanBeRelated: action.payload,
+      };
+    }
+
+    case GET_MY_POSTS_CAN_BE_RELATED_ERROR: {
+      return {
+        ...state,
+        postCanBeRelated: [],
       };
     }
 
