@@ -6,24 +6,24 @@
     ></app-post-detail>
   </div>
 
-  <!-- <div
+  <div
     class="columns is-multiline post-related-container"
-    *ngIf="(postDetail$ | async).postRelateds !== undefined && (postDetail$ | async).postRelateds.length > 0"
+    *ngIf="(postDetail$ | async).postsRelatedCompleted !== undefined && (postDetail$ | async).postsRelatedCompleted.length > 0"
   >
     <div class="column is-12">
       <h3>{{ "POSTREAD.RELATEDPOST" | translate }}</h3>
     </div>
 
     <div
-      class="column is-4"
-      *ngFor="let postRelated of (postDetail$ | async).postRelateds"
+      class="column is-3"
+      *ngFor="let postRelated of (postDetail$ | async).postsRelatedCompleted"
     >
       <app-post-related
         [postRelated]="postRelated"
         (postClick)="onPostRelatedClick($event)"
       ></app-post-related>
     </div>
-  </div> -->
+  </div>
 
   <!-- <div class="columns is-multiline">
     <div class="column is-12">

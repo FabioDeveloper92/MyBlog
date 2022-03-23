@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { RelatedPost } from '../../models/related-post.model';
+import { postsRelatedCompleted } from '../../models/related-post.model';
 
 @Component({
   selector: 'app-post-related',
@@ -7,7 +7,7 @@ import { RelatedPost } from '../../models/related-post.model';
   styleUrls: ['./post-related.component.scss'],
 })
 export class PostRelatedComponent {
-  @Input() postRelated: RelatedPost;
+  @Input() postRelated: postsRelatedCompleted;
   @Output() postClick = new EventEmitter<string>();
 
   constructor() {}

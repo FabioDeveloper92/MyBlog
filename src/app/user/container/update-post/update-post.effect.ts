@@ -37,6 +37,7 @@ import {
   PublishBlogCompleteAction,
   PublishBlogErrorAction,
   PUBLISH_BLOG,
+  PUBLISH_BLOG_COMPLETE,
   PUBLISH_BLOG_ERROR,
   SaveDraftBlogAction,
   SaveDraftBlogCompleteAction,
@@ -110,6 +111,12 @@ export class UpdatePostEffects {
           catchError((error) => of(new PublishBlogErrorAction(error)))
         )
     )
+  );
+
+  @Effect()
+  publishBlogComplete$ = this.action$.pipe(
+    ofType<PublishBlogCompleteAction>(PUBLISH_BLOG_COMPLETE),
+    map((action) => new GoAction({ path: ['blog', 'post', action.payload] }))
   );
 
   @Effect()

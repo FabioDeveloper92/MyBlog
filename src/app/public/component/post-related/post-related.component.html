@@ -2,8 +2,8 @@
   <div class="post-format post-image">
     <figure>
       <img
-        src="{{postRelated.imageUrl}}"
-        alt="Angelina Jolie’s Secret Style Weapon? The Top-Handle Tote"
+        src="{{postRelated.imageThumb}}"
+        alt="{{postRelated.title}}"
       />
     </figure>
   </div>
@@ -14,16 +14,5 @@
         >{{ postRelated.title }}</a
       >
     </h3>
-    <div class="post-meta">
-      <div class="ath-post"><span>by</span> admin</div>
-      <div class="date-post">
-        <span class="post-date">{{ postRelated.date | date:'dd MMMM' }}</span>
-      </div>
-    </div>
-    <div class="post-excerpt">
-      <p>
-        {{ postRelated.summary }}
-      </p>
-    </div>
   </div>
 </div>

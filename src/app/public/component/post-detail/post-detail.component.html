@@ -10,10 +10,10 @@
     {{ postDetail.title }}
   </h1>
   <div class="post-meta">
-    <div class="ath-post"><span>by</span> {{ postDetail.createdBy }}</div>
+    <div class="ath-post"><span>by</span> {{ postDetail.createBy }}</div>
     <div class="date-post">
       <span class="post-date">{{
-        postDetail.publishDate
+        postDetail.publishDate | date:'longDate'
       }}</span>
     </div>
     <!-- <div class="comment-number">
@@ -24,7 +24,7 @@
 </div>
 
 <div class="post-format">
-  <img src="{{ postDetail.imageUrl }}" alt="Featured Image" />
+  <img src="{{ postDetail.imageMain }}" alt="{{ postDetail.title }}" style="max-height: 200px;" />
 </div>
 
 <div>

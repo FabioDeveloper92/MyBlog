@@ -96,7 +96,7 @@ export class NewPostComponent implements OnInit, OnChanges {
     ) {
       for (let pr of this.selectPostsCanBeRelated) {
         var isSelected =
-          this.draftPost && this.draftPost.postRelated.includes(pr.id);
+          this.draftPost && this.draftPost.postsRelated.includes(pr.id);
         this.ctrlPostsRelated.push(new FormControl(isSelected));
       }
     }
