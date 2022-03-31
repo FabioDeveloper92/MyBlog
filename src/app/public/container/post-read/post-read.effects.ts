@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Effect, ofType, Actions } from '@ngrx/effects';
+import { Effect, ofType, Actions, act } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
@@ -14,6 +14,7 @@ import { PostService } from '../../../core/services/post.service';
 import { GoAction } from '../../../router.actions';
 import { ofRoute } from '../../../router.operator';
 import { selectRouterStateSnapshot } from '../../../router.selectors';
+import { Comment } from '../../models/comment.model';
 import { PublicState } from '../../public.state';
 import { selectPostDetailId } from '../post-read/post-read.selectors';
 import {
@@ -57,8 +58,12 @@ export class PostReadEffects {
   @Effect()
   addComment$ = this.action$.pipe(
     ofType<AddCommentPostAction>(ADD_COMMENT_POST),
+    withLatestFrom(
+      this.store.select(selectPostDetailId),
+      (action, postId) => ( {text: action.payload, postId: postId})
+    ),
     switchMap((action) =>
-      this.postService.addComment(action.payload).pipe(
+      this.postService.addComment(action).pipe(
         map((item) => new AddCommentPostCompleteAction()),
         catchError((error) => of(new AddCommentPostErrorAction(error)))
       )

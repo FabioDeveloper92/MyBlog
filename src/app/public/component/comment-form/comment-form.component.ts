@@ -12,27 +12,18 @@ import {
 })
 export class CommentFormComponent implements OnInit {
   @Input() isBusyAddComment: boolean;
-  @Output() addComment = new EventEmitter<Comment>();
+  @Output() addComment = new EventEmitter<string>();
 
   addCommentForm: FormGroup;
 
-  ctrlName: FormControl;
-  ctrlEmail: FormControl;
   ctrlComment: FormControl;
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.ctrlName = new FormControl('', [Validators.required]);
-    this.ctrlEmail = new FormControl('', [
-      Validators.required,
-      Validators.email,
-    ]);
     this.ctrlComment = new FormControl('', [Validators.required]);
 
     this.addCommentForm = this.fb.group({
-      name: this.ctrlName,
-      email: this.ctrlEmail,
       comment: this.ctrlComment,
     });
 
@@ -40,9 +31,6 @@ export class CommentFormComponent implements OnInit {
   }
 
   onAddComment() {
-    let comment = new Comment();
-    comment = { ...comment, ...this.addCommentForm.value };
-
-    this.addComment.emit(comment);
+    this.addComment.emit(this.addCommentForm.value.comment);
   }
 }

@@ -1,40 +1,9 @@
 <article class="media">
-  <figure class="media-left">
-    <p class="image is-64x64">
-      <img src="https://bulma.io/images/placeholders/128x128.png" />
-    </p>
-  </figure>
   <div
     class="media-content"
     [formGroup]="addCommentForm"
     (ngSubmit)="onAddComment()"
   >
-    <div class="columns field">
-      <div class="control column is-6">
-        <input
-          class="input"
-          type="text"
-          placeholder="{{ 'COMMENTFORM.NAME' | translate }} *"
-          formControlName="name"
-          [class.is-danger]="!ctrlName.valid && ctrlName.touched"
-        />
-        <label *ngIf="!ctrlName.valid && ctrlName.touched"
-        >{{'COMMENTFORM.NAMEISNOTVALID' | translate}}</label
-      >
-      </div>
-      <div class="control column is-6">
-        <input
-          class="input"
-          type="mail"
-          placeholder="{{ 'COMMENTFORM.EMAIL' | translate }} *"
-          formControlName="email"
-          [class.is-danger]="!ctrlEmail.valid && ctrlEmail.touched"
-        />
-        <label *ngIf="!ctrlEmail.valid && ctrlEmail.touched"
-        >{{'COMMENTFORM.EMAILISNOTVALID' | translate}}</label
-      >
-      </div>
-    </div>
     <div class="field">
       <p class="control">
         <textarea

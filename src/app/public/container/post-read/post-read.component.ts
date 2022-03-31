@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { selectIsAuthenticated } from '../../../authentication/auth.selector';
 import { Comment } from '../../models/comment.model';
 import { PostDetail } from '../../models/post-detail.model';
 import { OpenPostDetailAction } from '../home/home.actions';
@@ -14,17 +15,19 @@ import { PostReadState } from './post-read.state';
 
 @Component({
   selector: 'app-post-read',
-  templateUrl: './post-read.component.html'
+  templateUrl: './post-read.component.html',
 })
 export class PostReadContainerComponent {
   postDetail$: Observable<PostDetail>;
   isBusyAddComment$: Observable<boolean>;
   isBusyPostRead$: Observable<boolean>;
+  isAuthenticated$: Observable<boolean>;
 
   constructor(private store: Store<PostReadState>) {
     this.postDetail$ = this.store.select(selectPostDetail);
     this.isBusyAddComment$ = this.store.select(selectIsBusyAddComment);
     this.isBusyPostRead$ = this.store.select(selectIsBusyPostRead);
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
   }
 
   onCategoryClick(event: number) {
@@ -35,7 +38,7 @@ export class PostReadContainerComponent {
     this.store.dispatch(new OpenPostDetailAction(event));
   }
 
-  onAddComment(event: Comment) {
+  onAddComment(event: string) {
     this.store.dispatch(new AddCommentPostAction(event));
   }
 }

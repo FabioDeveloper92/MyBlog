@@ -1,4 +1,8 @@
-<div class="container" *ngIf="(postDetail$ | async)" [locker]="isBusyPostRead$ | async">
+<div
+  class="container"
+  *ngIf="postDetail$ | async"
+  [locker]="isBusyPostRead$ | async"
+>
   <div class="column is-12">
     <app-post-detail
       [postDetail]="postDetail$ | async"
@@ -8,7 +12,10 @@
 
   <div
     class="columns is-multiline post-related-container"
-    *ngIf="(postDetail$ | async).postsRelatedCompleted !== undefined && (postDetail$ | async).postsRelatedCompleted.length > 0"
+    *ngIf="
+      (postDetail$ | async).postsRelatedCompleted !== undefined &&
+      (postDetail$ | async).postsRelatedCompleted.length > 0
+    "
   >
     <div class="column is-12">
       <h3>{{ "POSTREAD.RELATEDPOST" | translate }}</h3>
@@ -25,7 +32,7 @@
     </div>
   </div>
 
-  <!-- <div class="columns is-multiline">
+  <div class="columns is-multiline">
     <div class="column is-12">
       <h3>
         {{ "POSTREAD.DISCUSSION" | translate }} ({{
@@ -34,17 +41,17 @@
       </h3>
     </div>
 
-    <div class="column is-12">
-      <app-comment-form
-        [isBusyAddComment]="isBusyAddComment$ | async"
-        (addComment)="onAddComment($event)"
-      ></app-comment-form>
-    </div>
-
     <div class="column is-12" *ngIf="(postDetail$ | async).comments">
       <app-comment-view
         [comments]="(postDetail$ | async).comments"
       ></app-comment-view>
     </div>
-  </div> -->
+
+    <div class="column is-12" *ngIf="isAuthenticated$ | async">
+      <app-comment-form
+        [isBusyAddComment]="isBusyAddComment$ | async"
+        (addComment)="onAddComment($event)"
+      ></app-comment-form>
+    </div>
+  </div>
 </div>

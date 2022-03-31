@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { ErrorPayload } from '../../../core/model/error-payload.model';
 import { PostDetail } from '../../models/post-detail.model';
-import { Comment } from '../../models/comment.model';
 
 export const POST_DETAIL = '[PostRead] Post Detail';
 export const POST_DETAIL_COMPLETE = '[PostRead] Post Detail Complete';
@@ -28,7 +27,7 @@ export class PostDetailErrorAction implements Action {
 
 export class AddCommentPostAction implements Action {
   readonly type = ADD_COMMENT_POST;
-  constructor(public payload: Comment) {}
+  constructor(public payload: string) {}
 }
 
 export class AddCommentPostCompleteAction implements Action {

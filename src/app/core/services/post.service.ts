@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Comment } from '../../public/models/comment.model';
 import { PostDetail } from '../../public/models/post-detail.model';
 import { ResumePost } from '../../public/models/resume-post.model';
@@ -28,8 +28,11 @@ export class PostService {
   }
 
   addComment(comment: Comment): Observable<void> {
-    console.log(comment);
-    return of();
+    return this.http.post<void>(
+      this.configService.buildApiUrl('api/postcomment'),
+      comment,
+      { responseType: 'text' as 'json' }
+    );
   }
 
   addPost(addPost: AddPost): Observable<string> {
