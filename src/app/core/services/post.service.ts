@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Comment } from '../../public/models/comment.model';
+import { PostComment } from '../../public/models/post-comment.model';
 import { PostDetail } from '../../public/models/post-detail.model';
 import { ResumePost } from '../../public/models/resume-post.model';
 import { ConfigService } from '../../services/config.service';
@@ -27,7 +28,7 @@ export class PostService {
     );
   }
 
-  addComment(comment: Comment): Observable<void> {
+  addComment(comment: PostComment): Observable<void> {
     return this.http.post<void>(
       this.configService.buildApiUrl('api/postcomment'),
       comment,
