@@ -3,7 +3,7 @@ import { MyPost } from '../../models/my-post.model';
 
 export interface UserAreaState {
   voiceMenu: VoiceMenu[];
-  voiceMenuSelected: number;
+  VoiceMenued: number;
   posts: MyPost[];
   isBusyGetPosts: boolean;
   filterByTitleContains: string;

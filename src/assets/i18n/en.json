@@ -104,5 +104,15 @@
     "EDIT": "Edit",
     "SHOWLESS": "Show Less",
     "SHOWMORE": "Show More"
+  },
+  "ORDERVISIBILITY": {
+    "RELEVANT": "Relevant",
+    "LATEST": "Latest",
+    "TOP": "Top"
+  },
+  "FILTERBYTIME": {
+    "WEEK": "Week",
+    "MONTH": "Month",
+    "INFINITY": "Infinity"
   }
 }

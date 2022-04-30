@@ -10,7 +10,7 @@ import {
   selectPosts,
   selectShowPostLimit,
   selectVoiceMenu,
-  selectVoiceMenuSelected,
+  selectVoiceMenued,
 } from './user-area.selector';
 import { UserAreaState } from './user-area.state';
 
@@ -27,7 +27,7 @@ export class UserAreaContainerComponent {
   
   constructor(private store: Store<UserAreaState>) {
     this.voicesMenu$ = store.select(selectVoiceMenu);
-    this.selectVoiceMenu$ = store.select(selectVoiceMenuSelected);
+    this.selectVoiceMenu$ = store.select(selectVoiceMenued);
     this.isBusyGetPosts$ = store.select(selectIsBusyGetPosts);
     this.myPosts$ = store.select(selectPosts);
     this.showPostNumber$ = store.select(selectShowPostLimit);

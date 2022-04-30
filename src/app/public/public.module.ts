@@ -18,6 +18,7 @@ import { PostReadContainerComponent } from './container/post-read/post-read.comp
 import { PostReadEffects } from './container/post-read/post-read.effects';
 import { PublicReducers } from './public.reducers';
 import { PublicRoutes } from './public.routes';
+import { TabFilterComponent } from './component/tab-filter/tab-filter.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { PublicRoutes } from './public.routes';
     CommentFormComponent,
     CommentViewComponent,
     BlogContainerComponent,
+    TabFilterComponent,
   ],
   imports: [
     CommonModule,

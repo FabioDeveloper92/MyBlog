@@ -1,16 +1,34 @@
 <div class="container" [locker]="isBusyPostList$ | async">
-    <div class="columns">
-      <div class="column is-12 has-text-centered">
-        <h2>{{ "BLOG.TITLEBLOG" | translate }}</h2>
-      </div>
-    </div>
-    <div class="columns is-multiline">
-      <div class="column is-4" *ngFor="let resumePost of resumesPost$ | async">
-        <app-resume-post
-          [resumePost]="resumePost"
-          (postClick)="onPostClick($event)"
-          (categoryClick)="onCategoryClick($event)"
-        ></app-resume-post>
-      </div>
+  <div class="columns">
+    <div class="column is-12 has-text-centered">
+      <h2>{{ "BLOG.TITLEBLOG" | translate }}</h2>
     </div>
   </div>
+  <div class="columns">
+    <div class="column col-6">
+      <app-tab-filter
+        [items]="orderByVisibilityVoices$ | async"
+        [selectId]="selectVisibilityVoices$ | async"
+        [isRight]="false"
+        (selectedClick)="onSelectOrderByVisibility($event)"
+      ></app-tab-filter>
+    </div>
+    <div class="column col-6">
+      <app-tab-filter
+        [items]="filterByTimeVoices$ | async"
+        [selectId]="selectTimeVoices$ | async"
+        [isRight]="true"
+        (selectedClick)="onSelectFilterByTime($event)"
+      ></app-tab-filter>
+    </div>
+  </div>
+  <div class="columns is-multiline">
+    <div class="column is-4" *ngFor="let resumePost of resumesPost$ | async">
+      <app-resume-post
+        [resumePost]="resumePost"
+        (postClick)="onPostClick($event)"
+        (categoryClick)="onCategoryClick($event)"
+      ></app-resume-post>
+    </div>
+  </div>
+</div>

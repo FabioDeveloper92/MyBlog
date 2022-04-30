@@ -1,11 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Effect, ofType, Actions } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
+import { PostService } from '../../../core/services/post.service';
 import { GoAction } from '../../../router.actions';
 import { ofRoute } from '../../../router.operator';
-import { PostService } from '../../../core/services/post.service';
+import { FILTER_BY_TIME_VOICES } from '../../models/filter-by-time.model';
+import { ORDER_BY_VISIBILITY_VOICES } from '../../models/order-by-visibility.model';
+import { PostsFilter } from '../../models/posts-filter.model';
 import {
+  InitFilterByTime,
+  InitOrderByVisibility,
   OpenPostDetailAction,
   OPEN_POST_DETAIL,
   PostListAction,
@@ -13,25 +27,58 @@ import {
   PostListErrorAction,
   POST_LIST,
   POST_LIST_ERROR,
+  SelectFilterByTime,
+  SelectOrderByVisibility,
+  SELECT_FILTER_BY_TIME,
+  SELECT_ORDER_BY_VISIBILITY,
 } from './blog.actions';
+import {
+  selectSelectTimeVoices,
+  selectSelectVisibilityVoices,
+} from './blog.selectors';
+import { BlogState } from './blog.state';
 
 @Injectable()
 export class BlogEffects {
   @Effect()
   mapRouteToGet$ = this.action$.pipe(
     ofRoute('blog'),
-    map(() => new PostListAction())
+    concatMap(() => [
+      new InitFilterByTime(FILTER_BY_TIME_VOICES),
+      new InitOrderByVisibility(ORDER_BY_VISIBILITY_VOICES),
+      new PostListAction()
+    ])
   );
 
   @Effect()
   list$ = this.action$.pipe(
     ofType<PostListAction>(POST_LIST),
-    switchMap(() =>
-      this.postService.list(5).pipe(
+    debounceTime(250),
+    withLatestFrom(
+      this.store.select(selectSelectVisibilityVoices),
+      this.store.select(selectSelectTimeVoices),
+      (_, filterByVisibility, filterByTime) => ({
+        filter: new PostsFilter(filterByVisibility, filterByTime, 100),
+      })
+    ),
+    switchMap((action) =>
+      this.postService.listOverview(action.filter).pipe(
         map((items) => new PostListCompleteAction(items)),
         catchError((error) => of(new PostListErrorAction(error)))
       )
     )
+  );
+
+  @Effect()
+  selectFilterByTime$ = this.action$.pipe(
+    ofType<SelectFilterByTime>(SELECT_FILTER_BY_TIME),
+    map((_) => new PostListAction())
+  );
+
+  @Effect()
+  selectOrderByVisibility$ = this.action$.pipe(
+    ofType<SelectOrderByVisibility>(SELECT_ORDER_BY_VISIBILITY),
+    map((_) => new PostListAction())
   );
 
   @Effect()
@@ -50,6 +97,7 @@ export class BlogEffects {
 
   constructor(
     private action$: Actions,
+    private store: Store<BlogState>,
     private postService: PostService
   ) {}
 }

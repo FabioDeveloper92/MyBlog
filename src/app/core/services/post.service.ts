@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Comment } from '../../public/models/comment.model';
 import { PostComment } from '../../public/models/post-comment.model';
 import { PostDetail } from '../../public/models/post-detail.model';
+import { PostsFilter } from '../../public/models/posts-filter.model';
 import { ResumePost } from '../../public/models/resume-post.model';
 import { ConfigService } from '../../services/config.service';
 import { AddPost } from '../../user/models/add-post.model';
@@ -16,9 +16,10 @@ import { UpdatePost } from '../../user/models/update-post.model';
 export class PostService {
   constructor(private http: HttpClient, private configService: ConfigService) {}
 
-  list(limit: number): Observable<ResumePost[]> {
-    return this.http.get<ResumePost[]>(
-      this.configService.buildApiUrl('api/postoverview/' + limit)
+  listOverview(postFilter: PostsFilter): Observable<ResumePost[]> {
+    return this.http.post<ResumePost[]>(
+      this.configService.buildApiUrl('api/postoverview'),
+      postFilter
     );
   }
 

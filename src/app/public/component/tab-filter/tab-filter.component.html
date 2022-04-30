@@ -1,0 +1,7 @@
+<div class="tabs" [class.is-right]="isRight">
+  <ul>
+    <li *ngFor="let item of items" [class.is-active]="selectId == item.id">
+      <a (click)="onSelected(item.id)">{{ item.text | translate }}</a>
+    </li>
+  </ul>
+</div>

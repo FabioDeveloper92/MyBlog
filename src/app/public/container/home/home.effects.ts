@@ -13,6 +13,7 @@ import {
   RESUMEPOST_LIST,
   RESUMEPOST_LIST_ERROR,
 } from './home.actions';
+import { PostsFilter } from '../../models/posts-filter.model';
 
 @Injectable()
 export class HomeEffects {
@@ -20,7 +21,7 @@ export class HomeEffects {
   list$ = this.action$.pipe(
     ofType<ResumePostListAction>(RESUMEPOST_LIST),
     switchMap(() =>
-      this.postService.list(3).pipe(
+      this.postService.listOverview(new PostsFilter(0, 0, 3)).pipe(
         map((items) => new ResumePostListCompleteAction(items)),
         catchError((error) => of(new ResumePostListErrorAction(error)))
       )

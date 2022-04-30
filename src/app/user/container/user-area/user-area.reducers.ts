@@ -16,7 +16,7 @@ import { UserAreaState } from './user-area.state';
 export function UserAreaReducers(
   state: UserAreaState = {
     voiceMenu: USER_AREA_VOICES_MENU,
-    voiceMenuSelected: 1,
+    VoiceMenued: 1,
     posts: [],
     isBusyGetPosts: false,
     filterByTitleContains: '',
@@ -30,7 +30,7 @@ export function UserAreaReducers(
     case SELECT_VOICE_MENU:
       return {
         ...state,
-        voiceMenuSelected: action.payload,
+        VoiceMenued: action.payload,
       };
 
     case GET_POSTS:

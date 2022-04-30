@@ -7,9 +7,9 @@ export const selectVoiceMenu = createSelector(
   (state: UserAreaState) => state.voiceMenu
 );
 
-export const selectVoiceMenuSelected = createSelector(
+export const selectVoiceMenued = createSelector(
   selectUserAreaState,
-  (state: UserAreaState) => state.voiceMenuSelected
+  (state: UserAreaState) => state.VoiceMenued
 );
 
 export const selectPosts = createSelector(
