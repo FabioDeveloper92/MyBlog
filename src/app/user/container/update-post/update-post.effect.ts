@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
@@ -48,8 +48,8 @@ import {
 
 @Injectable()
 export class UpdatePostEffects {
-  @Effect()
-  mapRouteToGet$ = this.action$.pipe(
+  
+  mapRouteToGet$ = createEffect(() => this.action$.pipe(
     ofRoute('updatepost/:id'),
     withLatestFrom(
       this.store.select(selectRouterStateSnapshot),
@@ -61,10 +61,10 @@ export class UpdatePostEffects {
       new GetTagsBlogAction(),
       new GetPostAction(router.params['id']),
     ])
-  );
+  ));
 
-  @Effect()
-  getTagsBlog$ = this.action$.pipe(
+  
+  getTagsBlog$ = createEffect(() => this.action$.pipe(
     ofType<GetTagsBlogAction>(GET_TAGS_BLOG),
     switchMap(() =>
       this.tagsService.list().pipe(
@@ -72,10 +72,10 @@ export class UpdatePostEffects {
         catchError((error) => of(new GetTagsBlogErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  getMyPostsCanBeRelated$ = this.action$.pipe(
+  
+  getMyPostsCanBeRelated$ = createEffect(() => this.action$.pipe(
     ofType<GetMyPostsCanBeRelatedAction>(GET_MY_POSTS_CAN_BE_RELATED),
     switchMap(() =>
       this.postService.getMyPostCanBeRelated().pipe(
@@ -83,10 +83,10 @@ export class UpdatePostEffects {
         catchError((error) => of(new GetMyPostsCanBeRelatedErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  getPost$ = this.action$.pipe(
+  
+  getPost$ = createEffect(() => this.action$.pipe(
     ofType<GetPostAction>(GET_POST),
     switchMap((action) =>
       this.postService.getUpdatePost(action.payload).pipe(
@@ -94,10 +94,10 @@ export class UpdatePostEffects {
         catchError((error) => of(new GetPostErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  publishPost$ = this.action$.pipe(
+  
+  publishPost$ = createEffect(() => this.action$.pipe(
     ofType<PublishBlogAction>(PUBLISH_BLOG),
     withLatestFrom(
       this.store.select(selectRouterStateSnapshot),
@@ -111,16 +111,16 @@ export class UpdatePostEffects {
           catchError((error) => of(new PublishBlogErrorAction(error)))
         )
     )
-  );
+  ));
 
-  @Effect()
-  publishBlogComplete$ = this.action$.pipe(
+  
+  publishBlogComplete$ = createEffect(() => this.action$.pipe(
     ofType<PublishBlogCompleteAction>(PUBLISH_BLOG_COMPLETE),
     map((action) => new GoAction({ path: ['blog', 'post', action.payload] }))
-  );
+  ));
 
-  @Effect()
-  saveDraftPost$ = this.action$.pipe(
+  
+  saveDraftPost$ = createEffect(() => this.action$.pipe(
     ofType<SaveDraftBlogAction>(SAVE_DRAFT_BLOG),
     withLatestFrom(
       this.store.select(selectRouterStateSnapshot),
@@ -134,10 +134,10 @@ export class UpdatePostEffects {
           catchError((error) => of(new SaveDraftBlogErrorAction(error)))
         )
     )
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  notifyError = this.action$.pipe(
+  
+  notifyError = createEffect(() => this.action$.pipe(
     ofType<
       | GetTagsBlogErrorAction
       | SaveDraftBlogErrorAction
@@ -159,7 +159,7 @@ export class UpdatePostEffects {
 
       console.log(action.payload);
     })
-  );
+  ), { dispatch: false });
 
   constructor(
     private action$: Actions,

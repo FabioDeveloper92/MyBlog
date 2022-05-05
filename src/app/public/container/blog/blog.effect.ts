@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
@@ -40,18 +40,18 @@ import { BlogState } from './blog.state';
 
 @Injectable()
 export class BlogEffects {
-  @Effect()
-  mapRouteToGet$ = this.action$.pipe(
+  
+  mapRouteToGet$ = createEffect(() => this.action$.pipe(
     ofRoute('blog'),
     concatMap(() => [
       new InitFilterByTime(FILTER_BY_TIME_VOICES),
       new InitOrderByVisibility(ORDER_BY_VISIBILITY_VOICES),
       new PostListAction()
     ])
-  );
+  ));
 
-  @Effect()
-  list$ = this.action$.pipe(
+  
+  list$ = createEffect(() => this.action$.pipe(
     ofType<PostListAction>(POST_LIST),
     debounceTime(250),
     withLatestFrom(
@@ -67,33 +67,33 @@ export class BlogEffects {
         catchError((error) => of(new PostListErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  selectFilterByTime$ = this.action$.pipe(
+  
+  selectFilterByTime$ = createEffect(() => this.action$.pipe(
     ofType<SelectFilterByTime>(SELECT_FILTER_BY_TIME),
     map((_) => new PostListAction())
-  );
+  ));
 
-  @Effect()
-  selectOrderByVisibility$ = this.action$.pipe(
+  
+  selectOrderByVisibility$ = createEffect(() => this.action$.pipe(
     ofType<SelectOrderByVisibility>(SELECT_ORDER_BY_VISIBILITY),
     map((_) => new PostListAction())
-  );
+  ));
 
-  @Effect()
-  postDetailOpen$ = this.action$.pipe(
+  
+  postDetailOpen$ = createEffect(() => this.action$.pipe(
     ofType<OpenPostDetailAction>(OPEN_POST_DETAIL),
     map((action) => new GoAction({ path: ['blog', 'post', action.payload] }))
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  notifyError = this.action$.pipe(
+  
+  notifyError = createEffect(() => this.action$.pipe(
     ofType<PostListErrorAction>(POST_LIST_ERROR),
     tap((action) => {
       console.log(action.payload);
     })
-  );
+  ), { dispatch: false });
 
   constructor(
     private action$: Actions,

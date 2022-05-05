@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 import { of } from 'rxjs';
@@ -43,8 +43,8 @@ import { AuthenticationService } from './services/authentication.service';
 
 @Injectable()
 export class AuthEffects {
-  @Effect()
-  mapRouteToGet$ = this.actions$.pipe(
+  
+  mapRouteToGet$ = createEffect(() => this.actions$.pipe(
     ofRoute('login'),
     map(() => {
       var oldToken = this.cookieService.get('token');
@@ -52,10 +52,10 @@ export class AuthEffects {
 
       return new ShowLoginTabAction();
     })
-  );
+  ));
 
-  @Effect()
-  getUserInfo$ = this.actions$.pipe(
+  
+  getUserInfo$ = createEffect(() => this.actions$.pipe(
     ofType<GetUserInfoAction>(GET_USERINFO),
     switchMap((action) =>
       this.authenticationService.getUserInfo().pipe(
@@ -63,10 +63,10 @@ export class AuthEffects {
         catchError((error) => of(new GetUserInfoErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  getUserInfoComplete$ = this.actions$.pipe(
+  
+  getUserInfoComplete$ = createEffect(() => this.actions$.pipe(
     ofType<GetUserInfoCompleteAction>(GET_USERINFO_COMPLETE),
     withLatestFrom(
       this.store.select(selectRouterStateSnapshot),
@@ -78,16 +78,16 @@ export class AuthEffects {
 
       return new NoAction();
     })
-  );
+  ));
 
-  @Effect()
-  getUserInfoError$ = this.actions$.pipe(
+  
+  getUserInfoError$ = createEffect(() => this.actions$.pipe(
     ofType<GetUserInfoErrorAction>(GET_USERINFO_ERROR),
     map((_) => new LogoutAction())
-  );
+  ));
 
-  @Effect()
-  loginJwt$ = this.actions$.pipe(
+  
+  loginJwt$ = createEffect(() => this.actions$.pipe(
     ofType<LoggedInGoogleAction>(LOGIN_JWT),
     switchMap((action) =>
       this.authenticationService.saveUserInfoFromGoogle(action.payload).pipe(
@@ -98,10 +98,10 @@ export class AuthEffects {
         catchError((error) => of(new LoginJwtErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  loggedInGoogle$ = this.actions$.pipe(
+  
+  loggedInGoogle$ = createEffect(() => this.actions$.pipe(
     ofType<LoggedInGoogleAction>(LOGGED_IN_GOOGLE),
     switchMap((action) =>
       this.authenticationService.saveUserInfoFromGoogle(action.payload).pipe(
@@ -112,19 +112,19 @@ export class AuthEffects {
         catchError((error) => of(new LoggedInGoogleErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  logout$ = this.actions$.pipe(
+  
+  logout$ = createEffect(() => this.actions$.pipe(
     ofType<LogoutAction>(LOGOUT),
     map((_) => {
       this.cookieService.delete('token');
       return new GoAction({ path: [''] });
     })
-  );
+  ));
 
-  @Effect()
-  signup$ = this.actions$.pipe(
+  
+  signup$ = createEffect(() => this.actions$.pipe(
     ofType<SignupAction>(SIGNUP),
     switchMap((action) =>
       this.authenticationService.signup(action.payload).pipe(
@@ -132,23 +132,23 @@ export class AuthEffects {
         catchError((error) => of(new SignupErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  signupComplete$ = this.actions$.pipe(
+  
+  signupComplete$ = createEffect(() => this.actions$.pipe(
     ofType<SignupCompleteAction>(SIGNUP_COMPLETE),
     map((action) => new GetUserInfoAction())
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  errorAfterLogin = this.actions$.pipe(
+  
+  errorAfterLogin = createEffect(() => this.actions$.pipe(
     ofType<LoggedInGoogleErrorAction | LoginJwtErrorAction | SignupErrorAction>(
       LOGGED_IN_GOOGLE_ERROR,
       LOGIN_JWT_ERROR,
       SIGNUP_ERROR
     ),
     tap((_) => console.log('ERROR AUTH EFFECTS'))
-  );
+  ), { dispatch: false });
 
   constructor(
     private store: Store<AppState>,

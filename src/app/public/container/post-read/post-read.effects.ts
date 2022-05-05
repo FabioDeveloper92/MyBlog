@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Effect, ofType, Actions, act } from '@ngrx/effects';
+import { createEffect, ofType, Actions, act } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
@@ -33,8 +33,8 @@ import {
 
 @Injectable()
 export class PostReadEffects {
-  @Effect()
-  mapRouteToGet$ = this.action$.pipe(
+  
+  mapRouteToGet$ = createEffect(() => this.action$.pipe(
     ofRoute('blog/post/:id'),
     withLatestFrom(
       this.store.select(selectRouterStateSnapshot),
@@ -42,10 +42,10 @@ export class PostReadEffects {
     ),
     filter((router) => !!router.params['id']),
     map((router) => new PostDetailAction(router.params['id']))
-  );
+  ));
 
-  @Effect()
-  postDetail$ = this.action$.pipe(
+  
+  postDetail$ = createEffect(() => this.action$.pipe(
     ofType<PostDetailAction>(POST_DETAIL),
     switchMap((action) =>
       this.postService.get(action.payload).pipe(
@@ -53,10 +53,10 @@ export class PostReadEffects {
         catchError((error) => of(new PostDetailErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  addComment$ = this.action$.pipe(
+  
+  addComment$ = createEffect(() => this.action$.pipe(
     ofType<AddCommentPostAction>(ADD_COMMENT_POST),
     withLatestFrom(
       this.store.select(selectPostDetailId),
@@ -68,20 +68,20 @@ export class PostReadEffects {
         catchError((error) => of(new AddCommentPostErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  addCommentComplete$ = this.action$.pipe(
+  
+  addCommentComplete$ = createEffect(() => this.action$.pipe(
     ofType<AddCommentPostCompleteAction>(ADD_COMMENT_POST_COMPLETE),
     withLatestFrom(
       this.store.select(selectPostDetailId),
       (_, postId) => postId
     ),
     map((postId) => new PostDetailAction(postId))
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  notifyError = this.action$.pipe(
+  
+  notifyError = createEffect(() => this.action$.pipe(
     ofType<PostDetailErrorAction | AddCommentPostErrorAction>(
       POST_DETAIL_ERROR,
       ADD_COMMENT_POST_ERROR
@@ -95,7 +95,7 @@ export class PostReadEffects {
 
       console.log(action.payload);
     })
-  );
+  ), { dispatch: false });
 
   constructor(
     private action$: Actions,

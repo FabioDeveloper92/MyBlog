@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { PostService } from '../../../core/services/post.service';
@@ -28,14 +28,14 @@ import {
 
 @Injectable()
 export class AddPostEffects {
-  @Effect()
-  mapRouteToGet$ = this.action$.pipe(
+  
+  mapRouteToGet$ = createEffect(() => this.action$.pipe(
     ofRoute('newpost'),
     map((_) => new GetTagsBlogAction())
-  );
+  ));
 
-  @Effect()
-  getTagsBlog$ = this.action$.pipe(
+  
+  getTagsBlog$ = createEffect(() => this.action$.pipe(
     ofType<GetTagsBlogAction>(GET_TAGS_BLOG),
     switchMap(() =>
       this.tagsService.list().pipe(
@@ -43,10 +43,10 @@ export class AddPostEffects {
         catchError((error) => of(new GetTagsBlogErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  publishPost$ = this.action$.pipe(
+  
+  publishPost$ = createEffect(() => this.action$.pipe(
     ofType<PublishBlogAction>(PUBLISH_BLOG),
     switchMap((action) =>
       this.postService.addPost(action.payload).pipe(
@@ -54,16 +54,16 @@ export class AddPostEffects {
         catchError((error) => of(new PublishBlogErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  publishBlogComplete$ = this.action$.pipe(
+  
+  publishBlogComplete$ = createEffect(() => this.action$.pipe(
     ofType<PublishBlogCompleteAction>(PUBLISH_BLOG_COMPLETE),
     map((action) => new GoAction({ path: ['blog', 'post', action.payload] }))
-  );
+  ));
 
-  @Effect()
-  saveDraftPost$ = this.action$.pipe(
+  
+  saveDraftPost$ = createEffect(() => this.action$.pipe(
     ofType<SaveDraftBlogAction>(SAVE_DRAFT_BLOG),
     switchMap((action) =>
       this.postService.addPost(action.payload).pipe(
@@ -71,23 +71,23 @@ export class AddPostEffects {
         catchError((error) => of(new SaveDraftBlogErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  saveDraftBlogComplete$ = this.action$.pipe(
+  
+  saveDraftBlogComplete$ = createEffect(() => this.action$.pipe(
     ofType<SaveDraftBlogCompleteAction>(SAVE_DRAFT_BLOG_COMPLETE),
     map((action) => new GoAction({ path: ['updatepost', action.payload] }))
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  notifyError = this.action$.pipe(
+  
+  notifyError = createEffect(() => this.action$.pipe(
     ofType<
       GetTagsBlogErrorAction | SaveDraftBlogErrorAction | PublishBlogErrorAction
     >(GET_TAGS_BLOG_ERROR, SAVE_DRAFT_BLOG_ERROR, PUBLISH_BLOG_ERROR),
     tap((action) => {
       console.log(action.payload);
     })
-  );
+  ), { dispatch: false });
 
   constructor(
     private action$: Actions,

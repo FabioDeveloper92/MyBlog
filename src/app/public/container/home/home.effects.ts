@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Effect, ofType, Actions } from '@ngrx/effects';
+import { createEffect, ofType, Actions } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { GoAction } from '../../../router.actions';
@@ -17,8 +17,8 @@ import { PostsFilter } from '../../models/posts-filter.model';
 
 @Injectable()
 export class HomeEffects {
-  @Effect()
-  list$ = this.action$.pipe(
+  
+  list$ = createEffect(() => this.action$.pipe(
     ofType<ResumePostListAction>(RESUMEPOST_LIST),
     switchMap(() =>
       this.postService.listOverview(new PostsFilter(0, 0, 3)).pipe(
@@ -26,21 +26,21 @@ export class HomeEffects {
         catchError((error) => of(new ResumePostListErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  postDetailOpen$ = this.action$.pipe(
+  
+  postDetailOpen$ = createEffect(() => this.action$.pipe(
     ofType<OpenPostDetailAction>(OPEN_POST_DETAIL),
     map((action) => new GoAction({ path: ['blog', 'post', action.payload] }))
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  notifyError = this.action$.pipe(
+  
+  notifyError = createEffect(() => this.action$.pipe(
     ofType<ResumePostListErrorAction>(RESUMEPOST_LIST_ERROR),
     tap((action) => {
       console.log(action.payload);
     })
-  );
+  ), { dispatch: false });
 
   constructor(
     private action$: Actions,

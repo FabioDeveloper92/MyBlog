@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { iif, of } from 'rxjs';
@@ -39,8 +39,8 @@ import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class ConfigEffects {
-  @Effect()
-  getConfig$ = this.actions$.pipe(
+  
+  getConfig$ = createEffect(() => this.actions$.pipe(
     ofType<GetConfigAction>(GET_CONFIG),
     tap(() => this.lockerService.Lock()),
     switchMap(() =>
@@ -49,20 +49,20 @@ export class ConfigEffects {
         catchError((error) => of(new GetConfigErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect()
-  configComplete$ = this.actions$.pipe(
+  
+  configComplete$ = createEffect(() => this.actions$.pipe(
     ofType<GetConfigCompleteAction>(GET_CONFIG_COMPLETE),
     tap(() => this.lockerService.Unlock()),
     mergeMap(() => [
       new GetUserInfoAction(),
       new SetupLanguageAction()
     ])
-  );
+  ));
 
-  @Effect()
-  setupLanguage$ = this.actions$.pipe(
+  
+  setupLanguage$ = createEffect(() => this.actions$.pipe(
     ofType<SetupLanguageAction>(SETUP_LANGUAGE),
     withLatestFrom(
       this.store.select(GetLanguageState),
@@ -79,10 +79,10 @@ export class ConfigEffects {
 
       return new ChangeLanguageAction(lang);
     })
-  );
+  ));
 
-  @Effect()
-  changeLanguage$ = this.actions$.pipe(
+  
+  changeLanguage$ = createEffect(() => this.actions$.pipe(
     ofType<ChangeLanguageAction>(CHANGE_LANGUAGE),
     switchMap(({ payload }) =>
       this.translateService.use(payload).pipe(
@@ -90,10 +90,10 @@ export class ConfigEffects {
         catchError((error) => of(new ChangeLanguageErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  notifyErrorLanguage$ = this.actions$.pipe(
+  
+  notifyErrorLanguage$ = createEffect(() => this.actions$.pipe(
     ofType<ChangeLanguageErrorAction>(CHANGE_LANGUAGE_ERROR),
     tap(({ payload }) => {
       if (payload.code === 404) {
@@ -102,13 +102,13 @@ export class ConfigEffects {
         console.log(payload.text);
       }
     })
-  );
+  ), { dispatch: false });
 
-  @Effect({ dispatch: false })
-  configError$ = this.actions$.pipe(
+  
+  configError$ = createEffect(() => this.actions$.pipe(
     ofType(GET_CONFIG_ERROR),
     tap(() => this.lockerService.Unlock())
-  );
+  ), { dispatch: false });
 
   constructor(
     private actions$: Actions,

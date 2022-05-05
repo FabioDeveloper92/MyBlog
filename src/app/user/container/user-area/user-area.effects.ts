@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
@@ -40,14 +40,14 @@ import { UserAreaState } from './user-area.state';
 
 @Injectable()
 export class UserAreaEffects {
-  @Effect()
-  mapRouteToGet$ = this.action$.pipe(
+  
+  mapRouteToGet$ = createEffect(() => this.action$.pipe(
     ofRoute('profile'),
     map((_) => new GetPostsAction())
-  );
+  ));
 
-  @Effect()
-  filterEvent$ = this.action$.pipe(
+  
+  filterEvent$ = createEffect(() => this.action$.pipe(
     ofType<
       | FilterByStateAction
       | FilterByTitleContainsAction
@@ -62,10 +62,10 @@ export class UserAreaEffects {
       REDUCE_LIST
     ),
     map(() => new GetPostsAction())
-  );
+  ));
 
-  @Effect()
-  getPosts$ = this.action$.pipe(
+  
+  getPosts$ = createEffect(() => this.action$.pipe(
     ofType<GetPostsAction>(GET_POSTS),
     debounceTime(250),
     withLatestFrom(
@@ -94,15 +94,15 @@ export class UserAreaEffects {
         catchError((error) => of(new GetPostsErrorAction(error)))
       )
     )
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  notifyError = this.action$.pipe(
+  
+  notifyError = createEffect(() => this.action$.pipe(
     ofType<GetPostsErrorAction>(GET_POSTS_ERROR),
     tap((action) => {
       console.log(action.payload);
     })
-  );
+  ), { dispatch: false });
 
   constructor(
     private action$: Actions,
